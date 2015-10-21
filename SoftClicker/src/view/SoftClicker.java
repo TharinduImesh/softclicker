@@ -1,5 +1,6 @@
 package view;
 
+import controller.StartServerButtonController;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -8,6 +9,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import model.BroadcastServer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -23,12 +25,11 @@ public class SoftClicker extends JFrame {
      *
      * @param mockServer the server simulator 
      */
-    
-    
+    StartServerButtonController broadcastController;
     
     public SoftClicker( ) {
         super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
-
+        broadcastController = new StartServerButtonController();
         final DefaultCategoryDataset dataset  = createDataset();
         
         JFreeChart barChart = ChartFactory.createBarChart(
@@ -58,9 +59,14 @@ public class SoftClicker extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(runServerButton.getText().equals("Start Server")){
+                    broadcastController.startBroadcastSever();
                     runServerButton.setText("Stop Server");
                     remButton.setEnabled(true);
                 }else{
+                    
+                    if(broadcastController.isBroadcastSeverAlive()){
+                        broadcastController.stopBroadcastSever();
+                    }
                     remButton.setEnabled(false);
                     runServerButton.setText("Start Server");
                 }
@@ -71,6 +77,7 @@ public class SoftClicker extends JFrame {
         remButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {  
+                broadcastController.stopBroadcastSever();
                 remButton.setEnabled(false);
             }
         });
