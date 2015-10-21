@@ -1,5 +1,6 @@
 package view;
 
+import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -26,10 +27,14 @@ public class SoftClicker extends JFrame {
      * @param mockServer the server simulator 
      */
     StartServerButtonController broadcastController;
+    ReceiveAnswerButtonController unicastController;
     
     public SoftClicker( ) {
         super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
+        
         broadcastController = new StartServerButtonController();
+        unicastController = new ReceiveAnswerButtonController();
+        
         final DefaultCategoryDataset dataset  = createDataset();
         
         JFreeChart barChart = ChartFactory.createBarChart(
@@ -67,6 +72,10 @@ public class SoftClicker extends JFrame {
                     if(broadcastController.isBroadcastSeverAlive()){
                         broadcastController.stopBroadcastSever();
                     }
+                    
+                    if(unicastController != null && unicastController.isUnicastSeverAlive()){
+                        unicastController.stopUnicastSever();
+                    }
                     remButton.setEnabled(false);
                     runServerButton.setText("Start Server");
                 }
@@ -76,7 +85,8 @@ public class SoftClicker extends JFrame {
         southButtonPanel.add(remButton);        
         remButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {  
+            public void actionPerformed(ActionEvent e) { 
+                unicastController.startUnicastSever();
                 broadcastController.stopBroadcastSever();
                 remButton.setEnabled(false);
             }

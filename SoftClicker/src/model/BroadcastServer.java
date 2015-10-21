@@ -73,7 +73,7 @@ public class BroadcastServer extends Thread{
             datagramSocket = new DatagramSocket();
             while(this.shouldRun) {
                 try {
-                    addresses [0] = addresses [0].concat(" 20000");
+                    addresses [0] = addresses [0].concat(" 3000");
                     buffer = addresses[0].getBytes();
                     datagramSocket.send(new DatagramPacket(buffer, addresses[0].length(),InetAddress.getByName("169.254.255.255"), 8080));
     //                InetAddress.getByName(addresses[1])InetAddress.getLocalHost()
