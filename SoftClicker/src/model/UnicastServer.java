@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import view.MainWindow;
 
 /**
  *
@@ -20,17 +21,14 @@ import java.util.logging.Logger;
 public class UnicastServer extends Thread{
     private ServerSocket serverSocket;
     private int count = 0;
-//    private MainWindow mainView;
+    private MainWindow mainWindow;
     private int answerCount;
     private boolean shouldRun;
 
-    /*
-    * get MainWindow instance to update real time count of received answers
-    */
-//    public Server(MainWindow mainWindow){
-//        this.mainView = mainWindow;
-//    }
-
+    public UnicastServer(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
+    
     public void mainServerProcess() {
         shouldRun = true;
         int serverPort = 3000;
@@ -66,7 +64,7 @@ public class UnicastServer extends Thread{
     * update count of received answers 
     */
     public void updateAnswerCount(int count){
-//        mainView.updateAnswerCount(count);
+        mainWindow.getCountVariable().setText(count+"");
     }
 
     /*
@@ -84,6 +82,6 @@ public class UnicastServer extends Thread{
 
     @Override
     public void run () {
-        mainServerProcess();
+        mainServerProcess();        
     }
 }

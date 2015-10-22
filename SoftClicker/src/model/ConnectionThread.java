@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,9 +21,15 @@ public class ConnectionThread extends Thread {
 
     private Socket client;
     private int id;
+    private String ACKMessage;
+    private Answer answer;
+    private final ArrayList<Answer> data;
+    
     public ConnectionThread(Socket socket, int id){
         this.client = socket;
         this.id = id;
+        this.data = Utils.getData();
+        this.answer = new Answer();
     }
 
     /*
@@ -34,17 +41,42 @@ public class ConnectionThread extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             PrintWriter out = new PrintWriter(client.getOutputStream(),true);
             String fromClient;
-            if((fromClient = in.readLine()) != null){
-                if(fromClient.equalsIgnoreCase("110228P:3")){
-                    System.out.println("from Client: " + fromClient);
-                    out.println("ACK: accept answer from client by thread "+this.id);
-                }
-                else{
-                    out.println("ACK: unauthorized access");
-                }
+            if((fromClient = in.readLine()) != null){   
+                decodeClientMessage(fromClient);
+                
+                System.out.println("from Client: " + fromClient);
+                ACKMessage = "";
+                ACKMessage = "ACK".concat(answer.getId()).concat(answer.getQuestionNo());
+                out.println(ACKMessage);
+//                saveAnswer();
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    private void decodeClientMessage(String message){
+        /*Format of reply message from client:
+                 *[msgLength] [MessageType] [clientMAC] [studentID] [Answer][QuestionNumber]
+                 */
+        
+        answer.setId("110228P");
+        answer.setAnswer("1");
+        answer.setQuestionNo("1");
+        answer.setMac("123456789809");
+    }
+    
+    private void saveAnswer(){
+        boolean isAvailable = false;
+        for(int i = 0; i < data.size();i++){
+            if(data.get(i).getId().equals(answer.getId())){
+                isAvailable = true;
+                data.add(i, answer);
+            }
+        }
+        
+        if(!isAvailable){
+            data.add(answer);
         }
     }
 }

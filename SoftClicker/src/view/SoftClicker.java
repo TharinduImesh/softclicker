@@ -4,12 +4,15 @@ import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import model.BroadcastServer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -28,12 +31,11 @@ public class SoftClicker extends JFrame {
      */
     StartServerButtonController broadcastController;
     ReceiveAnswerButtonController unicastController;
+    JTextField answerCount = new JTextField();
     
     public SoftClicker( ) {
         super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
         
-        broadcastController = new StartServerButtonController();
-        unicastController = new ReceiveAnswerButtonController();
         
         final DefaultCategoryDataset dataset  = createDataset();
         
@@ -49,48 +51,48 @@ public class SoftClicker extends JFrame {
         chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );        
         this.add(chartPanel, BorderLayout.CENTER);                
         
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         
         
         
         // South Button Pannel
         
         JPanel southButtonPanel = new JPanel();
-        final JButton remButton = new JButton("Receive Answers");
-        remButton.setEnabled(false);
-        final JButton runServerButton = new JButton("Start Server");
-        southButtonPanel.add(runServerButton);
-        runServerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(runServerButton.getText().equals("Start Server")){
-                    broadcastController.startBroadcastSever();
-                    runServerButton.setText("Stop Server");
-                    remButton.setEnabled(true);
-                }else{
-                    
-                    if(broadcastController.isBroadcastSeverAlive()){
-                        broadcastController.stopBroadcastSever();
-                    }
-                    
-                    if(unicastController != null && unicastController.isUnicastSeverAlive()){
-                        unicastController.stopUnicastSever();
-                    }
-                    remButton.setEnabled(false);
-                    runServerButton.setText("Start Server");
-                }
-            }
-        });
+//        final JButton remButton = new JButton("Receive Answers");
+//        remButton.setEnabled(false);
+//        final JButton runServerButton = new JButton("Start Server");
+//        southButtonPanel.add(runServerButton);
+//        runServerButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if(runServerButton.getText().equals("Start Server")){
+//                    broadcastController.startBroadcastSever();
+//                    runServerButton.setText("Stop Server");
+//                    remButton.setEnabled(true);
+//                }else{
+//                    
+//                    if(broadcastController.isBroadcastSeverAlive()){
+//                        broadcastController.stopBroadcastSever();
+//                    }
+//                    
+//                    if(unicastController != null && unicastController.isUnicastSeverAlive()){
+//                        unicastController.stopUnicastSever();
+//                    }
+//                    remButton.setEnabled(false);
+//                    runServerButton.setText("Start Server");
+//                }
+//            }
+//        });
         
-        southButtonPanel.add(remButton);        
-        remButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { 
-                unicastController.startUnicastSever();
-                broadcastController.stopBroadcastSever();
-                remButton.setEnabled(false);
-            }
-        });
+//        southButtonPanel.add(remButton);        
+//        remButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) { 
+////                unicastController.startUnicastSever();
+////                broadcastController.stopBroadcastSever();
+////                remButton.setEnabled(false);
+//            }
+//        });
         this.add(southButtonPanel, BorderLayout.SOUTH);
         
         
@@ -98,7 +100,7 @@ public class SoftClicker extends JFrame {
         
         JPanel eastButtonPanel = new JPanel();
         JButton refreshButton = new JButton("Refresh");
-        eastButtonPanel.add(refreshButton);
+        southButtonPanel.add(refreshButton);
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,7 +108,15 @@ public class SoftClicker extends JFrame {
             }
         });
         JButton csvButton = new JButton("Import to CSV");
-        eastButtonPanel.add(csvButton);
+        JButton tstButton = new JButton("Test");
+        southButtonPanel.add(csvButton);
+        southButtonPanel.add(tstButton);
+        answerCount.setColumns(10);
+        //answerCount.setSize(eastButtonPanel.getSize());
+        //answerCount.setEditable(false);
+//        JLabel answerCountLabel = new JLabel("Answer Count");
+//        eastButtonPanel.add(answerCountLabel);
+//        eastButtonPanel.add(answerCount);
         csvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,17 +191,17 @@ public class SoftClicker extends JFrame {
 
     /** Main method
      * @param args */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                SoftClicker clicker = new SoftClicker();
-                clicker.pack();
-                clicker.setLocationRelativeTo(null);
-                clicker.setVisible(true);
-            }
-         });
-    }
+//    public static void main(String[] args) {
+//        EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                SoftClicker clicker = new SoftClicker();
+//                clicker.pack();
+//                clicker.setLocationRelativeTo(null);
+//                clicker.setVisible(true);
+//            }
+//         });
+//    }
 }
 
 class MockServer{

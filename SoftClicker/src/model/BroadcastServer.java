@@ -69,13 +69,14 @@ public class BroadcastServer extends Thread{
     public void broadcasting() {
         this.shouldRun = true;
         String [] addresses = getIPAddress();
+        // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
+        String broadcastMessage = "BROADCAST".concat(addresses[0]).concat("3000").concat("1");
         try {
             datagramSocket = new DatagramSocket();
             while(this.shouldRun) {
                 try {
-                    addresses [0] = addresses [0].concat(" 3000");
-                    buffer = addresses[0].getBytes();
-                    datagramSocket.send(new DatagramPacket(buffer, addresses[0].length(),InetAddress.getByName("169.254.255.255"), 8080));
+                    buffer = broadcastMessage.getBytes();
+                    datagramSocket.send(new DatagramPacket(buffer, broadcastMessage.length(),InetAddress.getByName("169.254.255.255"), 8080));
     //                InetAddress.getByName(addresses[1])InetAddress.getLocalHost()
                     sleep(500);
                 }
