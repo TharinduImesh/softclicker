@@ -24,9 +24,11 @@ public class UnicastServer extends Thread{
     private MainWindow mainWindow;
     private int answerCount;
     private boolean shouldRun;
+    private Utils utils;
 
     public UnicastServer(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+        this.utils = new Utils();
     }
     
     public void mainServerProcess() {
@@ -45,7 +47,7 @@ public class UnicastServer extends Thread{
                     /*
                     * create separate thread to deal with each mobile client
                     */
-                    ConnectionThread thread = new ConnectionThread(client, count);
+                    ConnectionThread thread = new ConnectionThread(client, count, utils.getData());
                     thread.start();
                     answerCount++;
                     updateAnswerCount(answerCount);

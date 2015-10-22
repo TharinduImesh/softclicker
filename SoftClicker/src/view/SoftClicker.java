@@ -5,6 +5,7 @@ import controller.StartServerButtonController;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -34,9 +35,9 @@ public class SoftClicker extends JFrame {
     JTextField answerCount = new JTextField();
     
     public SoftClicker( ) {
-        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
+//        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
         
-        
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));
         final DefaultCategoryDataset dataset  = createDataset();
         
         JFreeChart barChart = ChartFactory.createBarChart(

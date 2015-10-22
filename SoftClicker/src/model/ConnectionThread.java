@@ -25,10 +25,10 @@ public class ConnectionThread extends Thread {
     private Answer answer;
     private final ArrayList<Answer> data;
     
-    public ConnectionThread(Socket socket, int id){
+    public ConnectionThread(Socket socket, int id, ArrayList<Answer> data){
         this.client = socket;
         this.id = id;
-        this.data = Utils.getData();
+        this.data = data;
         this.answer = new Answer();
     }
 
@@ -48,7 +48,7 @@ public class ConnectionThread extends Thread {
                 ACKMessage = "";
                 ACKMessage = "ACK".concat(answer.getId()).concat(answer.getQuestionNo());
                 out.println(ACKMessage);
-//                saveAnswer();
+                saveAnswer();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,6 +72,7 @@ public class ConnectionThread extends Thread {
             if(data.get(i).getId().equals(answer.getId())){
                 isAvailable = true;
                 data.add(i, answer);
+                break;
             }
         }
         

@@ -13,14 +13,19 @@ import java.util.ArrayList;
  * @author THARU
  */
 public class Utils {
-    private static ArrayList<Answer> data = new ArrayList();
+    private volatile ArrayList<Answer> data;
 
-    public static ArrayList<Answer> getData() {
-        return data;
+    public Utils() {
+         this.data = new ArrayList();
     }
 
-    public static void setData(ArrayList<Answer> data) {
-        Utils.data = data;
+    
+    public ArrayList<Answer> getData() {
+        return this.data;
+    }
+
+    public void setData(ArrayList<Answer> data) {
+        this.data = data;
     }
     
     

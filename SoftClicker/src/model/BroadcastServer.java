@@ -76,7 +76,7 @@ public class BroadcastServer extends Thread{
             while(this.shouldRun) {
                 try {
                     buffer = broadcastMessage.getBytes();
-                    datagramSocket.send(new DatagramPacket(buffer, broadcastMessage.length(),InetAddress.getByName("169.254.255.255"), 8080));
+                    datagramSocket.send(new DatagramPacket(buffer,broadcastMessage.length() ,InetAddress.getByName("192.168.0.255"), 8080));
     //                InetAddress.getByName(addresses[1])InetAddress.getLocalHost()
                     sleep(500);
                 }
