@@ -8,13 +8,16 @@ import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import model.Answer;
 import model.BroadcastServer;
+import model.Utils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -33,6 +36,7 @@ public class SoftClicker extends JFrame {
     StartServerButtonController broadcastController;
     ReceiveAnswerButtonController unicastController;
     JTextField answerCount = new JTextField();
+    private ArrayList<Answer> data;
     
     public SoftClicker( ) {
 //        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
@@ -100,14 +104,15 @@ public class SoftClicker extends JFrame {
         // East Button Panel
         
         JPanel eastButtonPanel = new JPanel();
-        JButton refreshButton = new JButton("Refresh");
-        southButtonPanel.add(refreshButton);
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateDataset(dataset);
-            }
-        });
+//        JButton refreshButton = new JButton("Refresh");
+//        southButtonPanel.add(refreshButton);
+//        refreshButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                updateDataset(dataset);
+//            }
+//        });
+        
         JButton csvButton = new JButton("Import to CSV");
         JButton tstButton = new JButton("Test");
         southButtonPanel.add(csvButton);
@@ -133,6 +138,8 @@ public class SoftClicker extends JFrame {
             }
         });
         this.add(eastButtonPanel, BorderLayout.EAST);
+        
+        updateDataset(dataset);
     }
 
     /**
@@ -176,15 +183,51 @@ public class SoftClicker extends JFrame {
         final String q5 = "Answer 5";
         
 
-//        int[] answers = getAnswers();
-//
-//        dataset.addValue( answers[0] , q1 , ans1 );        
-//        dataset.addValue( answers[1] , q2 , ans2 );        
-//        dataset.addValue( answers[2] , q3 , ans3 ); 
-//        dataset.addValue( answers[3] , q4 , ans4 );   
-//        dataset.addValue( answers[4] , q5 , ans5 );
+        int [] summary = getSummary();
+
+        dataset.addValue( summary[0] , q1 , ans1 );        
+        dataset.addValue( summary[1] , q2 , ans2 );        
+        dataset.addValue( summary[2] , q3 , ans3 ); 
+        dataset.addValue( summary[3] , q4 , ans4 );   
+        dataset.addValue( summary[4] , q5 , ans5 );
+        
+//        dataset.addValue( 10 , q1 , ans1 );        
+//        dataset.addValue( 5, q2 , ans2 );        
+//        dataset.addValue( 16 , q3 , ans3 ); 
+//        dataset.addValue( 12 , q4 , ans4 );   
+//        dataset.addValue( 8 , q5 , ans5 );
         
     }
+    
+    public int [] getSummary(){
+        int [] summary = new int[5];
+        data = Utils.getData();
+        int countOne = 0;
+        int countTwo = 0;
+        int countThree = 0;
+        int countFour = 0;
+        int countFive = 0;
+        
+        for(Answer a : data){
+            int x = a.getAnswer();
+            switch(x){
+                case 1 : countOne++; break;
+                case 2 : countTwo++; break;
+                case 3 : countThree++; break;
+                case 4 : countFour++; break;
+                case 5 : countFive++; break;
+            }
+        }
+        
+        summary[0] = countOne;
+        summary[1] = countTwo;
+        summary[2] = countThree;
+        summary[3] = countFour;
+        summary[4] = countFive;
+        
+        return summary;
+    }
+    
     
 //    private int[] getAnswers(){
 //        return mockServer.getAnswers();

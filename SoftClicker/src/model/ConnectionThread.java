@@ -61,7 +61,7 @@ public class ConnectionThread extends Thread {
                  */
         
         answer.setId("110228P");
-        answer.setAnswer("1");
+        answer.setAnswer(1);
         answer.setQuestionNo("1");
         answer.setMac("123456789809");
     }

@@ -24,11 +24,11 @@ public class UnicastServer extends Thread{
     private MainWindow mainWindow;
     private int answerCount;
     private boolean shouldRun;
-    private Utils utils;
+//    private Utils utils;
 
     public UnicastServer(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        this.utils = new Utils();
+//        this.utils = new Utils();
     }
     
     public void mainServerProcess() {
@@ -47,7 +47,7 @@ public class UnicastServer extends Thread{
                     /*
                     * create separate thread to deal with each mobile client
                     */
-                    ConnectionThread thread = new ConnectionThread(client, count, utils.getData());
+                    ConnectionThread thread = new ConnectionThread(client, count, Utils.getData());
                     thread.start();
                     answerCount++;
                     updateAnswerCount(answerCount);
@@ -78,7 +78,7 @@ public class UnicastServer extends Thread{
             serverSocket.close();
             stop();
         } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

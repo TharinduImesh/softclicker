@@ -6,16 +6,19 @@
 
 package controller;
 
+import model.Utils;
+import view.MainWindow;
+
 /**
  *
  * @author THARU
  */
-public class saveButtonController {
-    
-    /*
-    * save data corresponding to each question
-    */
-    public void save(){
-        
+public class Initializer {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        MainWindow.start();
     }
 }

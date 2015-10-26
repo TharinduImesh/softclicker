@@ -13,7 +13,7 @@ package model;
 public class Answer {
     private String id;
     private String questionNo;
-    private String answer;
+    private int answer;
     private String mac;
 
     public String getQuestionNo() {
@@ -24,11 +24,11 @@ public class Answer {
         this.questionNo = questionNo;
     }
 
-    public String getAnswer() {
+    public int getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(int answer) {
         this.answer = answer;
     }
 
