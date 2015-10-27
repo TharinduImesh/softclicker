@@ -1,5 +1,6 @@
 package view;
 
+import controller.ImportToCSVButtonController;
 import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
@@ -8,9 +9,13 @@ import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Random;
+import java.util.Set;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,7 +41,7 @@ public class SoftClicker extends JFrame {
     StartServerButtonController broadcastController;
     ReceiveAnswerButtonController unicastController;
     JTextField answerCount = new JTextField();
-    private ArrayList<Answer> data;
+    private Hashtable<String,Answer> data;
     
     public SoftClicker( ) {
 //        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
@@ -63,6 +68,8 @@ public class SoftClicker extends JFrame {
         // South Button Pannel
         
         JPanel southButtonPanel = new JPanel();
+        final JLabel statusbar = 
+                 new JLabel("Output of your selection will go here");
 //        final JButton remButton = new JButton("Receive Answers");
 //        remButton.setEnabled(false);
 //        final JButton runServerButton = new JButton("Start Server");
@@ -126,14 +133,27 @@ public class SoftClicker extends JFrame {
         csvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Button 2 Clicked!");
-                int row = dataset.getRowCount();
-                int col = dataset.getColumnCount();
+//                System.out.println("Button 2 Clicked!");
+//                int row = dataset.getRowCount();
+//                int col = dataset.getColumnCount();
+//                
+//                for(int i = 0; i < row; i++){
+//                    for(int j = 0; j < col; j++){
+//                        System.out.println(dataset.getValue(i, j));
+//                    }
+//                }
                 
-                for(int i = 0; i < row; i++){
-                    for(int j = 0; j < col; j++){
-                        System.out.println(dataset.getValue(i, j));
-                    }
+                JFileChooser chooser = new JFileChooser();
+                int option = chooser.showSaveDialog(SoftClicker.this);
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = chooser.getSelectedFile();
+//                  statusbar.setText("You saved " + ((chooser.getSelectedFile()!=null)?
+//                                    chooser.getSelectedFile().getName():"nothing"));
+                    ImportToCSVButtonController importTo = new ImportToCSVButtonController();
+                    importTo.importToCSV(fileToSave.getAbsolutePath());
+                }
+                else {
+                  statusbar.setText("You canceled.");
                 }
             }
         });
@@ -208,8 +228,9 @@ public class SoftClicker extends JFrame {
         int countFour = 0;
         int countFive = 0;
         
-        for(Answer a : data){
-            int x = a.getAnswer();
+        Set<String> keys = data.keySet();
+        for(String key:keys){
+            int x = data.get(key).getAnswer();
             switch(x){
                 case 1 : countOne++; break;
                 case 2 : countTwo++; break;

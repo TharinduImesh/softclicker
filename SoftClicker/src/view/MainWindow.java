@@ -1,9 +1,12 @@
 package view;
 
 import controller.ReceiveAnswerButtonController;
+import controller.SaveAnswersController;
 import controller.StartServerButtonController;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import model.Utils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,7 +31,9 @@ public class MainWindow extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));
         broadcastController = new StartServerButtonController();
         unicastController = new ReceiveAnswerButtonController(this);
+        startServerButton.setEnabled(false);
         receiveAnswersButton.setEnabled(false);
+        
     }
 
     /**
@@ -46,13 +51,14 @@ public class MainWindow extends javax.swing.JFrame {
         sumaryButton = new javax.swing.JButton();
         count = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        questionNo = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         startServerButton.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
-        startServerButton.setText("Start Sever");
+        startServerButton.setText("Start Server");
         startServerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startServerButtonActionPerformed(evt);
@@ -85,23 +91,28 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/logoUoM.png"))); // NOI18N
 
+        questionNo.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
+        questionNo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "     Question 01", "     Question 02", "     Question 03", "     Question 04", "     Question 05", "     Question 06", "     Question 07", "     Question 08", "     Question 09", "     Question 10" }));
+        questionNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questionNoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(startServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(receiveAnswersButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sumaryButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sumaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(receiveAnswersButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(startServerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(questionNo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -114,13 +125,15 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(count)
+                    .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(startServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(receiveAnswersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(sumaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(questionNo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(startServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(receiveAnswersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(sumaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(33, 33, 33))
         );
 
@@ -128,7 +141,7 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,12 +152,15 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void startServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startServerButtonActionPerformed
-        if(startServerButton.getText().equals("Start Server")){
-            broadcastController.startBroadcastSever();
+    
+        if(startServerButton.getText().equalsIgnoreCase("Start Server")){
+            if(!broadcastController.isBroadcastSeverAlive()){
+                broadcastController.stopBroadcastSever();
+                broadcastController.startBroadcastSever();               
+            }
             startServerButton.setText("Stop Server");
             receiveAnswersButton.setEnabled(true);
         }else{
-
             if(broadcastController.isBroadcastSeverAlive()){
                 broadcastController.stopBroadcastSever();
             }
@@ -152,6 +168,18 @@ public class MainWindow extends javax.swing.JFrame {
             if(unicastController != null && unicastController.isUnicastSeverAlive()){
                 unicastController.stopUnicastSever();
             }
+            
+            if(!receiveAnswersButton.isEnabled()){
+                final JOptionPane optionPane = new JOptionPane("save results?",
+                                                        JOptionPane.QUESTION_MESSAGE,
+                                                        JOptionPane.YES_NO_OPTION);
+                int response = JOptionPane.showConfirmDialog(optionPane,"save results?");
+                if (response == JOptionPane.YES_OPTION) {
+                    SaveAnswersController s = new SaveAnswersController();
+                    s.save();
+                }
+            }
+            
             receiveAnswersButton.setEnabled(false);
             startServerButton.setText("Start Server");
         }
@@ -167,12 +195,19 @@ public class MainWindow extends javax.swing.JFrame {
     private void receiveAnswersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiveAnswersButtonActionPerformed
         unicastController.startUnicastSever();
         broadcastController.stopBroadcastSever();
-        receiveAnswersButton.setEnabled(false);
+        receiveAnswersButton.setEnabled(false);        
+        
     }//GEN-LAST:event_receiveAnswersButtonActionPerformed
 
     private void countActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_countActionPerformed
+
+    private void questionNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionNoActionPerformed
+        startServerButton.setEnabled(true);
+        Utils.setQuestionNo(questionNo.getSelectedIndex()+1);
+        Utils.incrementQuestionCount();
+    }//GEN-LAST:event_questionNoActionPerformed
 
     public JTextField getCountVariable(){
         return count;
@@ -214,6 +249,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField count;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox questionNo;
     private javax.swing.JButton receiveAnswersButton;
     private javax.swing.JButton startServerButton;
     private javax.swing.JButton sumaryButton;

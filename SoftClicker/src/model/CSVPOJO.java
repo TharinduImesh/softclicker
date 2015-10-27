@@ -11,26 +11,16 @@ package model;
  * @author THARU
  */
 public class CSVPOJO {
-    String data;
     String student_ID;
     String device_MAC;
-    String answer;
+    int [] answer;
     int total_no_of_response;
 
-    public CSVPOJO(String data, String student_ID, String device_MAC, String answer, int total_no_of_response) {
-        this.data = data;
+    public CSVPOJO( String student_ID, String device_MAC, int [] answer, int total_no_of_response) {
         this.student_ID = student_ID;
         this.device_MAC = device_MAC;
         this.answer = answer;
         this.total_no_of_response = total_no_of_response;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public String getStudent_ID() {
@@ -49,11 +39,11 @@ public class CSVPOJO {
         this.device_MAC = device_MAC;
     }
 
-    public String getAnswer() {
+    public int [] getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(int [] answer) {
         this.answer = answer;
     }
 

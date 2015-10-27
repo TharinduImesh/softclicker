@@ -71,6 +71,7 @@ public class BroadcastServer extends Thread{
         String [] addresses = getIPAddress();
         // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
         String broadcastMessage = "BROADCAST".concat(addresses[0]).concat("3000").concat("1");
+        
         try {
             datagramSocket = new DatagramSocket();
             while(this.shouldRun) {
@@ -95,7 +96,9 @@ public class BroadcastServer extends Thread{
     */
     public void stopBroadcastServer(){
         this.shouldRun = false;
-        datagramSocket.close();
+        if(datagramSocket != null){
+            datagramSocket.close();
+        }
         stop();
     }
 

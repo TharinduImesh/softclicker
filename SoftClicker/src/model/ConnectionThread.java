@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  *
@@ -23,9 +24,9 @@ public class ConnectionThread extends Thread {
     private int id;
     private String ACKMessage;
     private Answer answer;
-    private final ArrayList<Answer> data;
+    private final Hashtable<String,Answer> data;
     
-    public ConnectionThread(Socket socket, int id, ArrayList<Answer> data){
+    public ConnectionThread(Socket socket, int id, Hashtable<String,Answer> data){
         this.client = socket;
         this.id = id;
         this.data = data;
@@ -67,18 +68,7 @@ public class ConnectionThread extends Thread {
     }
     
     private void saveAnswer(){
-        boolean isAvailable = false;
-        for(int i = 0; i < data.size();i++){
-            if(data.get(i).getId().equals(answer.getId())){
-                isAvailable = true;
-                data.add(i, answer);
-                break;
-            }
-        }
-        
-        if(!isAvailable){
-            data.add(answer);
-        }
+        data.put(answer.getId(), answer);
     }
 }
 

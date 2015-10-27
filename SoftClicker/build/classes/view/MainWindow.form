@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -44,22 +44,16 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="startServerButton" min="-2" pref="167" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="receiveAnswersButton" alignment="1" min="-2" pref="168" max="-2" attributes="0"/>
-                              <Component id="sumaryButton" alignment="1" min="-2" pref="167" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                  <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="sumaryButton" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
+                      <Component id="receiveAnswersButton" alignment="0" max="32767" attributes="0"/>
+                      <Component id="startServerButton" alignment="0" max="32767" attributes="0"/>
+                      <Component id="questionNo" alignment="0" min="-2" pref="168" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="count" min="-2" pref="459" max="-2" attributes="0"/>
-                  <EmptySpace pref="53" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                  <Component id="count" min="-2" pref="445" max="-2" attributes="0"/>
+                  <EmptySpace pref="38" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -75,13 +69,15 @@
                   <Component id="jLabel1" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="count" max="32767" attributes="0"/>
+                      <Component id="count" min="-2" pref="218" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="startServerButton" min="-2" pref="51" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                          <Component id="receiveAnswersButton" min="-2" pref="50" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="sumaryButton" min="-2" pref="49" max="-2" attributes="0"/>
+                          <Component id="questionNo" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="startServerButton" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="receiveAnswersButton" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="sumaryButton" min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -95,7 +91,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Trajan Pro" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Start Sever"/>
+            <Property name="text" type="java.lang.String" value="Start Server"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startServerButtonActionPerformed"/>
@@ -140,6 +136,30 @@
               <Image iconType="3" name="/view/logoUoM.png"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="questionNo">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Trajan Pro" size="14" style="1"/>
+            </Property>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="10">
+                <StringItem index="0" value="     Question 01"/>
+                <StringItem index="1" value="     Question 02"/>
+                <StringItem index="2" value="     Question 03"/>
+                <StringItem index="3" value="     Question 04"/>
+                <StringItem index="4" value="     Question 05"/>
+                <StringItem index="5" value="     Question 06"/>
+                <StringItem index="6" value="     Question 07"/>
+                <StringItem index="7" value="     Question 08"/>
+                <StringItem index="8" value="     Question 09"/>
+                <StringItem index="9" value="     Question 10"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="questionNoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

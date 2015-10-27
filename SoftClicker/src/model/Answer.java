@@ -6,11 +6,13 @@
 
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author THARU
  */
-public class Answer {
+public class Answer implements Serializable{
     private String id;
     private String questionNo;
     private int answer;
