@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
 import java.io.IOException;
@@ -12,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Hashtable;
 import view.MainWindow;
+import Codec.*;
 
 /**
  *
@@ -50,20 +45,35 @@ public class UnicastConnectionThread extends Thread {
         try {
             ObjectInputStream  oin = new ObjectInputStream(client.getInputStream());
             ObjectOutputStream  dout = new ObjectOutputStream(client.getOutputStream());
-            String fromClient = oin.readObject().toString();
+            byte []fromClient = (byte[]) oin.readObject();
+            //String fromClient = oin.readObject().toString();
+            byte []ack;
+            
             if(fromClient != null && isAvailable){   
-                decodeClientMessage(fromClient);                                // decode message from mobile app
+                // decode message from mobile app
+                RespondMessage m = (RespondMessage)Codec.DecodeMessage(fromClient);
+                //System.out.println("from Client: " + fromClient);
                 
-                System.out.println("from Client: " + fromClient);
-                ACKMessage = "";
-                ACKMessage = "ACK".concat(answer.getId()).concat(answer.getQuestionNo());
-                dout.writeObject(ACKMessage);                                   // send acknowledgement message
+                ack = Codec.EncodeAcknowledgementMessage(m.getStudentID(), m.getQuestionNumber()); 
+                
+                //You can use my RespondMessage directlt here as well
+                //You expect question as a string
+                int questionNo = m.getQuestionNumber();
+                
+                answer.setAnswer(m.getAnswer());
+                answer.setId(m.getStudentID());
+                answer.setQuestionNo(String.valueOf(m.getQuestionNumber()));
+                answer.setMac(m.getClientMAC());
+                
+                dout.writeObject(ack);                                   // send acknowledgement message
                 saveAnswer(answer.getId());                                     // sava answer
             }
             else{
-                ACKMessage = "";                                                // if server has stopped by lecturer 
-                ACKMessage = "ACK,Server has stopped";                          // send server stopped acknoledgement
-                dout.writeObject(ACKMessage);
+                ack = Codec.EncodeErrorMessage(Keys.ERROR_SERVICE_UNAVAILABLE);
+                
+                //ACKMessage = "";                                                // if server has stopped by lecturer 
+                //ACKMessage = "ACK,Server has stopped";                          // send server stopped acknoledgement
+                dout.writeObject(ack);
             }
             
             oin.close();
@@ -73,16 +83,17 @@ public class UnicastConnectionThread extends Thread {
         }
     }
     
+    /*
     private void decodeClientMessage(String message){
-        /*Format of reply message from client:
-                 *[msgLength] [MessageType] [clientMAC] [studentID] [Answer][QuestionNumber]
-                 */
+        //Format of reply message from client:
+          //[msgLength] [MessageType] [clientMAC] [studentID] [Answer][QuestionNumber]
+                 
         String [] temp = message.split(",");
         answer.setId(temp[1]);
         answer.setAnswer(Integer.parseInt(temp[3]));
         answer.setQuestionNo(temp[2]);
         answer.setMac(temp[0]);
-    }
+    }*/
     
     private void saveAnswer(String id){
         if(!data.containsKey(id)){

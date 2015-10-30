@@ -15,6 +15,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
+import Codec.*;
 
 /**
  *
@@ -26,7 +27,7 @@ import java.util.Enumeration;
 public class BroadcastServer extends Thread{
     private ServerSocket serverSocket;
     public static DatagramSocket datagramSocket;
-    public static byte buffer[] = new byte[1024];
+    //public static byte buffer[] = new byte[1024];
     private boolean shouldRun;
 
     /*
@@ -67,14 +68,14 @@ public class BroadcastServer extends Thread{
         this.shouldRun = true;
         String [] addresses = getIPAddress();
         // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
-        String broadcastMessage = "BROADCAST,".concat(addresses[0].substring(1)).concat(",").concat("3000").concat(",").concat(Utils.getQuestionCount()+"");
+        
+        byte []broadcastMessage = Codec.EncodeMultiCastMessage(addresses[0].substring(1), 3000, Utils.getQuestionCount());
         
         try {
             datagramSocket = new DatagramSocket();
             while(this.shouldRun) {
                 try {
-                    buffer = broadcastMessage.getBytes();
-                    datagramSocket.send(new DatagramPacket(buffer,broadcastMessage.length() ,InetAddress.getByName("192.168.0.255"), 8080));
+                    datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName("192.168.0.255"), 8080));
                     sleep(500);
                 }
                 catch (IOException | InterruptedException i){
