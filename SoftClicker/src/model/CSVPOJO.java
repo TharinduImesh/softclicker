@@ -10,6 +10,9 @@ package model;
  *
  * @author THARU
  */
+/*
+* this model is used to create csv tupple
+*/
 public class CSVPOJO {
     String student_ID;
     String device_MAC;

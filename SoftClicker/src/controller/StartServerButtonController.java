@@ -20,6 +20,9 @@ public class StartServerButtonController {
     }    
     
     public void startBroadcastSever(){
+        if(broadcastServer == null || !broadcastServer.isAlive()){
+            broadcastServer = new BroadcastServer();
+        }        
         broadcastServer.start();
     }
     

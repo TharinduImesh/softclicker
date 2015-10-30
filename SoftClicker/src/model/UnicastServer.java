@@ -6,12 +6,9 @@
 
 package model;
 
-import com.sun.corba.se.spi.activation.Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import view.MainWindow;
 
 /**
@@ -22,13 +19,10 @@ public class UnicastServer extends Thread{
     private ServerSocket serverSocket;
     private int count = 0;
     private MainWindow mainWindow;
-    private int answerCount;
     private boolean shouldRun;
-//    private Utils utils;
 
     public UnicastServer(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-//        this.utils = new Utils();
     }
     
     public void mainServerProcess() {
@@ -44,13 +38,19 @@ public class UnicastServer extends Thread{
                     Socket client = serverSocket.accept();
                     count++;
                     System.out.println("Processing request "+count);
-                    /*
-                    * create separate thread to deal with each mobile client
-                    */
-                    ConnectionThread thread = new ConnectionThread(client, count, Utils.getData());
-                    thread.start();
-                    answerCount++;
-                    updateAnswerCount(answerCount);
+                    
+                    if(Utils.isServerState()){
+                        /*
+                        * create separate thread to deal with each mobile client
+                        */
+                        UnicastConnectionThread thread = new UnicastConnectionThread(client, count, Utils.getData(),mainWindow);
+                        thread.start();
+                    }
+                    else{
+                        UnicastConnectionThread thread = new UnicastConnectionThread(client, count, false);
+                        thread.start();
+                    }
+                    
                 } catch (IOException ioe) {
                     System.out.println("Error accepting connection");
                     ioe.printStackTrace();
@@ -63,13 +63,6 @@ public class UnicastServer extends Thread{
     }
 
     /*
-    * update count of received answers 
-    */
-    public void updateAnswerCount(int count){
-        mainWindow.getCountVariable().setText(count+"");
-    }
-
-    /*
     * to stop server
     */
     public void stopServer(){
@@ -78,7 +71,6 @@ public class UnicastServer extends Thread{
             serverSocket.close();
             stop();
         } catch (IOException ex) {
-//            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

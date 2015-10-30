@@ -9,10 +9,12 @@ package controller;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import model.Answer;
 import model.CSVFileWriter;
 import model.CSVPOJO;
 import model.FileIOOperation;
+import model.Utils;
 
 /**
  *
@@ -20,9 +22,12 @@ import model.FileIOOperation;
  */
 public class ImportToCSVButtonController {
     
-    public void importToCSV(String filePath){
-        ArrayList<CSVPOJO> data = dataPreProcessing();
-        writeToCSV(filePath, data);
+    public void importToCSV(String filePath){        
+            SaveAnswersController s = new SaveAnswersController();
+            s.save();
+            ArrayList<CSVPOJO> data = dataPreProcessing();
+            writeToCSV(filePath, data);
+                
     }
     
     public ArrayList<CSVPOJO> dataPreProcessing(){
@@ -35,6 +40,13 @@ public class ImportToCSVButtonController {
         for(Hashtable<String,Answer> answerSet: existData){            
             Set<String> keys = answerSet.keySet();            
             for(String key:keys){ 
+//                Answer answer = answerSet.get(key);
+//                System.out.println("new answer");
+//                System.out.println("id: "+answer.getId());
+//                System.out.println("answer: "+answer.getAnswer());
+//                System.out.println("mac: "+answer.getMac());
+//                System.out.println("Q: "+answer.getQuestionNo());
+//                System.out.println("\n");
                 CSVPOJO pojo = isAvailable(key, data);
                 if(pojo != null){
                     int [] targetAnswers = pojo.getAnswer();
@@ -51,6 +63,7 @@ public class ImportToCSVButtonController {
                     data.add(pojo);
                 }
             }
+            count++;
         }
         
         return data;

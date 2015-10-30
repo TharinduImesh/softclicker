@@ -12,6 +12,10 @@ import java.io.Serializable;
  *
  * @author THARU
  */
+
+/*
+* Answer model is used to map answer of student
+*/
 public class Answer implements Serializable{
     private String id;
     private String questionNo;

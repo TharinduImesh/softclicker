@@ -13,9 +13,12 @@ import java.util.Hashtable;
  *
  * @author THARU
  */
+/*
+* use to store answer set of one question
+*/
 public class TempObject implements Serializable{
     private int questionNo;
-    private Hashtable<String,Answer> data;
+    private Hashtable<String,Answer> data;                                      // answer set
 
     public int getQuestionNo() {
         return questionNo;

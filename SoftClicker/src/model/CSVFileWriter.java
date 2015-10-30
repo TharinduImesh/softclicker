@@ -20,9 +20,9 @@ import java.util.Date;
 public class CSVFileWriter {
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = "\n";
-    //CSV file header
-    private String FILE_HEADER = "Date,Student_ID,device_MAC,";//answer_1,answer_2,answer_3,total_no_of_response";
-//    private String filePath = "C:\\Users\\";
+    //CSV file initial header
+    private String FILE_HEADER = "Date,Student_ID,device_MAC,";
+    
     public void writeCsvFile(String fileName, ArrayList<CSVPOJO> data) {
 
         FileWriter fileWriter = null;
@@ -31,7 +31,7 @@ public class CSVFileWriter {
                 fileName = fileName.concat(".csv");
             }
             
-            int count = data.get(0).answer.length;
+            int count = Utils.getQuestionCount();
             for(int i=0;i<count;i++){
                 FILE_HEADER = FILE_HEADER.concat("answer_"+(i+1)+",");
             }

@@ -14,18 +14,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author THARU
  */
+/*
+* use to store answers of each question in a text file as a obejct and retrive when required
+*/
 public class FileIOOperation {
     
     public void writeInToFile(Hashtable<String,Answer> data){
         TempObject temp = new TempObject();
-        temp.setQuestionNo(Utils.getQuestionNo());
+        temp.setQuestionNo(Utils.getQuestionCount());
         temp.setData(data);
         
         try{
@@ -35,9 +36,9 @@ public class FileIOOperation {
                 file.mkdir();
             }
             
-            File newFile = new File("C:\\SoftclickerUOM\\"+Utils.getQuestionNo()+".txt");
+            File newFile = new File("C:\\SoftclickerUOM\\"+Utils.getQuestionCount()+".txt");
             newFile.createNewFile();
-            FileOutputStream fout = new FileOutputStream("C:\\SoftclickerUOM\\"+Utils.getQuestionNo()+".txt");
+            FileOutputStream fout = new FileOutputStream("C:\\SoftclickerUOM\\"+Utils.getQuestionCount()+".txt");
             ObjectOutputStream oos = new ObjectOutputStream(fout);   
             oos.writeObject(temp);
             oos.flush();
@@ -48,18 +49,24 @@ public class FileIOOperation {
             ex.printStackTrace();
         }
     }
-    
+    /*
+    * retrive all answers of all question
+    */
     public ArrayList<Hashtable<String,Answer>> readOperation(){
         ArrayList<Hashtable<String,Answer>> readData = new ArrayList<>();
         
         for(int i=0;i<Utils.getQuestionCount();i++){
             TempObject temp = readFromFile(i+1);
-            int x = temp.getQuestionNo();
-            readData.add(x-1, temp.getData());
+            if(temp != null){
+                readData.add(temp.getData());
+            }
         }        
         return readData;
     }
     
+    /*
+    * retrive answers of given problem
+    */
     public TempObject readFromFile(int fileName){
         TempObject temp = null;
         try {            
@@ -68,7 +75,8 @@ public class FileIOOperation {
             temp = (TempObject)ois.readObject();
             ois.close();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(FileIOOperation.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(FileIOOperation.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         
         return temp;

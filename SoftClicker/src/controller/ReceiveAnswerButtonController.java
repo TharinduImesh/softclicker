@@ -20,7 +20,12 @@ public class ReceiveAnswerButtonController {
         unicastServer = new UnicastServer(mainWindow);
     }       
     
-    public void startUnicastSever(){
+    public void startUnicastSever(MainWindow mainWindow){
+        
+        if(unicastServer == null || !unicastServer.isAlive()){
+            unicastServer = new UnicastServer(mainWindow);
+        }
+        
         unicastServer.start();
     }
     

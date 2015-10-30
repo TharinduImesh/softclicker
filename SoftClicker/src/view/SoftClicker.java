@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.Answer;
@@ -121,9 +122,7 @@ public class SoftClicker extends JFrame {
 //        });
         
         JButton csvButton = new JButton("Import to CSV");
-        JButton tstButton = new JButton("Test");
         southButtonPanel.add(csvButton);
-        southButtonPanel.add(tstButton);
         answerCount.setColumns(10);
         //answerCount.setSize(eastButtonPanel.getSize());
         //answerCount.setEditable(false);
@@ -142,19 +141,21 @@ public class SoftClicker extends JFrame {
 //                        System.out.println(dataset.getValue(i, j));
 //                    }
 //                }
-                
-                JFileChooser chooser = new JFileChooser();
-                int option = chooser.showSaveDialog(SoftClicker.this);
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    File fileToSave = chooser.getSelectedFile();
-//                  statusbar.setText("You saved " + ((chooser.getSelectedFile()!=null)?
-//                                    chooser.getSelectedFile().getName():"nothing"));
-                    ImportToCSVButtonController importTo = new ImportToCSVButtonController();
-                    importTo.importToCSV(fileToSave.getAbsolutePath());
+                if(Utils.getQuestionCount() > 0){       
+                    JFileChooser chooser = new JFileChooser();
+                    int option = chooser.showSaveDialog(SoftClicker.this);
+                    if (option == JFileChooser.APPROVE_OPTION) {
+                        File fileToSave = chooser.getSelectedFile();
+                        ImportToCSVButtonController importTo = new ImportToCSVButtonController();
+                        importTo.importToCSV(fileToSave.getAbsolutePath());    
+                    }
+                    else {
+                      statusbar.setText("You canceled.");
+                    }
                 }
-                else {
-                  statusbar.setText("You canceled.");
-                }
+                else{
+                    JOptionPane.showMessageDialog(null, "No data available");
+                }                 
             }
         });
         this.add(eastButtonPanel, BorderLayout.EAST);
