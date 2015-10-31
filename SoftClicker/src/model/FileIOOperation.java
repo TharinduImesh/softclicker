@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import Codec.*;
 
 /**
  *
@@ -24,7 +25,7 @@ import java.util.Hashtable;
 */
 public class FileIOOperation {
     
-    public void writeInToFile(Hashtable<String,Answer> data){
+    public void writeInToFile(Hashtable<String,RespondMessage> data){
         TempObject temp = new TempObject();
         temp.setQuestionNo(Utils.getQuestionCount());
         temp.setData(data);
@@ -52,8 +53,8 @@ public class FileIOOperation {
     /*
     * retrive all answers of all question
     */
-    public ArrayList<Hashtable<String,Answer>> readOperation(){
-        ArrayList<Hashtable<String,Answer>> readData = new ArrayList<>();
+    public ArrayList<Hashtable<String,RespondMessage>> readOperation(){
+        ArrayList<Hashtable<String,RespondMessage>> readData = new ArrayList<>();
         
         for(int i=0;i<Utils.getQuestionCount();i++){
             TempObject temp = readFromFile(i+1);

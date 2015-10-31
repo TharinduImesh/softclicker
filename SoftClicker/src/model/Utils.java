@@ -7,17 +7,18 @@
 package model;
 
 import java.util.Hashtable;
+import Codec.*;
 
 /**
  *
  * @author THARU
  */
 public class Utils {
-    private static final Hashtable<String,Answer> data = new Hashtable();       // use to store answers of each question
+    private static final Hashtable<String,RespondMessage> data = new Hashtable();       // use to store answers of each question
     private static int questionCount;                                           // number question in each lecture
     private static boolean serverState;                                         // true if server is running
                                                                                 // false if server has stopped
-    public static Hashtable<String,Answer> getData() {
+    public static Hashtable<String,RespondMessage> getData() {
         return data;
     }
 

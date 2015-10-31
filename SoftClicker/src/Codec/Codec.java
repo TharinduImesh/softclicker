@@ -26,7 +26,7 @@ public class Codec {
             server port: 4 bytes
             */
             
-            InetAddress ip = InetAddress.getByName("192.168.2.1");  //throws unknown host exception
+            InetAddress ip = InetAddress.getByName(serverIP);  //throws unknown host exception
             
             byte messageType_questionNumber_byte = mType_qNumberIntoByte(Keys.MultiCast, questionNumber);
             byte[] serverIP_byteArray = ip.getAddress();
@@ -325,7 +325,7 @@ public class Codec {
     }
     
     private static void testMessages(){
-        byte [] array = EncodeMultiCastMessage("192.168.2.8", 3000, 20);
+        byte [] array = EncodeMultiCastMessage("192.168.2.101", 3000, 20);
         Message m = DecodeMessage(array);
         testPrint(m);
         
@@ -416,6 +416,6 @@ public class Codec {
         System.out.println(mType_errorCodeByteIntoErrorCode(bytes2[0]));;
         */  
         
-        testMessages();
+        //testMessages();
     }
 }

@@ -17,16 +17,17 @@ public class UnicastConnectionThread extends Thread {
     private final Socket client;
     private final int id;
     private String ACKMessage;
-    private Answer answer;
-    private Hashtable<String,Answer> data;
+    //private Answer answer;
+    private RespondMessage respondMessage;
+    private Hashtable<String,RespondMessage> data;
     private final boolean isAvailable;
     private MainWindow mainWindow;
     
-    public UnicastConnectionThread(Socket socket, int id, Hashtable<String,Answer> data, MainWindow mainWindow){
+    public UnicastConnectionThread(Socket socket, int id, Hashtable<String,RespondMessage> data, MainWindow mainWindow){
         this.client = socket;
         this.id = id;
         this.data = data;
-        this.answer = new Answer();
+        //this.answer = new Answer();
         this.isAvailable = true;
         this.mainWindow = mainWindow;
     }
@@ -51,22 +52,13 @@ public class UnicastConnectionThread extends Thread {
             
             if(fromClient != null && isAvailable){   
                 // decode message from mobile app
-                RespondMessage m = (RespondMessage)Codec.DecodeMessage(fromClient);
+                respondMessage = (RespondMessage)Codec.DecodeMessage(fromClient);
                 //System.out.println("from Client: " + fromClient);
                 
-                ack = Codec.EncodeAcknowledgementMessage(m.getStudentID(), m.getQuestionNumber()); 
-                
-                //You can use my RespondMessage directlt here as well
-                //You expect question as a string
-                int questionNo = m.getQuestionNumber();
-                
-                answer.setAnswer(m.getAnswer());
-                answer.setId(m.getStudentID());
-                answer.setQuestionNo(String.valueOf(m.getQuestionNumber()));
-                answer.setMac(m.getClientMAC());
+                ack = Codec.EncodeAcknowledgementMessage(respondMessage.getStudentID(), respondMessage.getQuestionNumber()); 
                 
                 dout.writeObject(ack);                                   // send acknowledgement message
-                saveAnswer(answer.getId());                                     // sava answer
+                saveAnswer(respondMessage.getStudentID());                                     // sava answer
             }
             else{
                 ack = Codec.EncodeErrorMessage(Keys.ERROR_SERVICE_UNAVAILABLE);
@@ -100,7 +92,7 @@ public class UnicastConnectionThread extends Thread {
             updateLiveCount();
         }
         
-        data.put(answer.getId(), answer);
+        data.put(respondMessage.getStudentID(), respondMessage);
     }
     
     /*

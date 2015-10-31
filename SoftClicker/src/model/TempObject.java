@@ -8,6 +8,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import Codec.*;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.Hashtable;
 */
 public class TempObject implements Serializable{
     private int questionNo;
-    private Hashtable<String,Answer> data;                                      // answer set
+    private Hashtable<String,RespondMessage> data;                                      // answer set
 
     public int getQuestionNo() {
         return questionNo;
@@ -28,11 +29,11 @@ public class TempObject implements Serializable{
         this.questionNo = questionNo;
     }
 
-    public Hashtable<String,Answer> getData() {
+    public Hashtable<String,RespondMessage> getData() {
         return data;
     }
 
-    public void setData(Hashtable<String,Answer> data) {
+    public void setData(Hashtable<String,RespondMessage> data) {
         this.data = data;
     }
 }

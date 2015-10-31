@@ -1,16 +1,14 @@
 package view;
 
+import Codec.RespondMessage;
 import controller.ImportToCSVButtonController;
 import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
@@ -21,8 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import model.Answer;
-import model.BroadcastServer;
 import model.Utils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -42,7 +38,7 @@ public class SoftClicker extends JFrame {
     StartServerButtonController broadcastController;
     ReceiveAnswerButtonController unicastController;
     JTextField answerCount = new JTextField();
-    private Hashtable<String,Answer> data;
+    private Hashtable<String,RespondMessage> data;
     
     public SoftClicker( ) {
 //        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
@@ -228,9 +224,9 @@ public class SoftClicker extends JFrame {
         int countThree = 0;
         int countFour = 0;
         int countFive = 0;
-        
         Set<String> keys = data.keySet();
         for(String key:keys){
+            //int x =  
             int x = data.get(key).getAnswer();
             switch(x){
                 case 1 : countOne++; break;
