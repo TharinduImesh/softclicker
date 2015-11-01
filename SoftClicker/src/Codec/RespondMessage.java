@@ -1,10 +1,12 @@
 package Codec;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Rajind
  */
-public class RespondMessage extends Message{
+public class RespondMessage extends Message implements Serializable{
     private int questionNumber;
     private String clientMAC;
     private String studentID;

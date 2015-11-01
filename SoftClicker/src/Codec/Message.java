@@ -1,10 +1,12 @@
 package Codec;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Rajind
  */
-public class Message {
+public class Message implements Serializable{
 
     private String messageType;
 

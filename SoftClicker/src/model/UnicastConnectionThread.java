@@ -56,9 +56,11 @@ public class UnicastConnectionThread extends Thread {
                 //System.out.println("from Client: " + fromClient);
                 
                 ack = Codec.EncodeAcknowledgementMessage(respondMessage.getStudentID(), respondMessage.getQuestionNumber()); 
-                
+                System.out.println("getting completed");
                 dout.writeObject(ack);                                   // send acknowledgement message
+                System.out.println("ack sent");
                 saveAnswer(respondMessage.getStudentID());                                     // sava answer
+                System.out.println("saved");
             }
             else{
                 ack = Codec.EncodeErrorMessage(Keys.ERROR_SERVICE_UNAVAILABLE);
