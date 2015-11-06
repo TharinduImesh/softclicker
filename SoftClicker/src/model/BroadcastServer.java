@@ -16,6 +16,9 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
 import Codec.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,11 +32,12 @@ public class BroadcastServer extends Thread{
     public static DatagramSocket datagramSocket;
     //public static byte buffer[] = new byte[1024];
     private boolean shouldRun;
+    private String [] addresses = new String[2];
 
     /*
     * find IP address and broadcast address of network
     */
-    public String[] getIPAddress(){
+    public void getIPAddress(){
         System.setProperty("java.net.preferIPv4Stack", "true");
         String broadcastAddress ="";
         String ipAddress ="";
@@ -58,33 +62,57 @@ public class BroadcastServer extends Thread{
         catch (SocketException s){
             s.printStackTrace();
         }
-        return new String[]{ipAddress,broadcastAddress};
+        
+        addresses [0] = ipAddress;
+        addresses [1] = broadcastAddress;
+//        return new String[]{ipAddress,broadcastAddress};
     }
 
+    public String[] getAddresses() {
+        return addresses;
+    }
+    
+    public void createSockets(){
+        try {
+            serverSocket = new ServerSocket(0);
+            Utils.setServerSocket(serverSocket);
+            System.out.println("server socket listening on port: " + serverSocket.getLocalPort());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+//            Logger.getLogger(BroadcastServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /*
     * broadcast the message which contains server IP address and port number 
     */
     public void broadcasting() {
         this.shouldRun = true;
-        String [] addresses = getIPAddress();
+        createSockets();
+//        String [] addresses = getIPAddress();
         // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
-        
-        byte []broadcastMessage = Codec.EncodeMultiCastMessage(addresses[0].substring(1), 3000, Utils.getQuestionCount());
-        
-        try {
-            datagramSocket = new DatagramSocket();
-            while(this.shouldRun) {
-                try {
-                    datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName("192.168.0.255"), 8080));
-                    sleep(500);
-                }
-                catch (IOException | InterruptedException i){
-                    i.printStackTrace();
+        if(addresses[0] != null && !addresses[0].equals("")){
+            byte []broadcastMessage = Codec.EncodeMultiCastMessage(addresses[0].substring(1), serverSocket.getLocalPort(), Utils.getQuestionCount());
+
+            try {
+                datagramSocket = new DatagramSocket(0);
+                System.out.println("datagram listening on port: " + datagramSocket.getLocalPort());
+                while(this.shouldRun) {
+                    try {
+                        datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName("192.168.0.255"), 54000));//datagramSocket.getLocalPort()));
+                        sleep(500);
+                    }
+                    catch (IOException | InterruptedException i){
+                        i.printStackTrace();
+                    }
                 }
             }
+            catch(SocketException s){
+                s.printStackTrace();
+            }
         }
-        catch(SocketException s){
-            s.printStackTrace();
+        else{
+            JOptionPane.showMessageDialog(null, "Connection problem. Please check your PC connects to correct access point");
         }
     }
 

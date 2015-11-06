@@ -7,7 +7,7 @@
 package controller;
 
 import model.UnicastServer;
-import view.MainWindow;
+import view.ServerWindow;
 
 /**
  *
@@ -16,11 +16,11 @@ import view.MainWindow;
 public class ReceiveAnswerButtonController {
 
     UnicastServer unicastServer;
-    public ReceiveAnswerButtonController(MainWindow mainWindow) {
+    public ReceiveAnswerButtonController(ServerWindow mainWindow) {
         unicastServer = new UnicastServer(mainWindow);
     }       
     
-    public void startUnicastSever(MainWindow mainWindow){
+    public void startUnicastSever(ServerWindow mainWindow){
         
         if(unicastServer == null || !unicastServer.isAlive()){
             unicastServer = new UnicastServer(mainWindow);

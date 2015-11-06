@@ -63,7 +63,7 @@ public class CSVFileWriter {
                 fileWriter.append(NEW_LINE_SEPARATOR);
             }
             System.out.println("CSV file was created successfully !!!");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error in CsvFileWriter !!!");
             e.printStackTrace();
         } finally {

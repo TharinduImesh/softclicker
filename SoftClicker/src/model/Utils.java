@@ -6,8 +6,9 @@
 
 package model;
 
-import java.util.Hashtable;
 import Codec.*;
+import java.net.ServerSocket;
+import java.util.Hashtable;
 
 /**
  *
@@ -18,6 +19,17 @@ public class Utils {
     private static int questionCount;                                           // number question in each lecture
     private static boolean serverState;                                         // true if server is running
                                                                                 // false if server has stopped
+    private static boolean saved = false;
+    private static ServerSocket serverSocket;// = new ServerSocket(serverPort);
+
+    public static ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public static void setServerSocket(ServerSocket serverSocket) {
+        Utils.serverSocket = serverSocket;
+    }
+    
     public static Hashtable<String,RespondMessage> getData() {
         return data;
     }
@@ -40,6 +52,14 @@ public class Utils {
 
     public static void setServerState(boolean serverState) {
         Utils.serverState = serverState;
+    }
+
+    public static boolean isSaved() {
+        return saved;
+    }
+
+    public static void setSaved(boolean saved) {
+        Utils.saved = saved;
     }
 
 }

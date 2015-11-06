@@ -6,14 +6,14 @@
 
 package controller;
 
+import Codec.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
-//import model.Answer;
 import model.CSVFileWriter;
 import model.CSVPOJO;
 import model.FileIOOperation;
-import Codec.*;
+import model.Utils;
 
 /**
  *
@@ -21,11 +21,14 @@ import Codec.*;
  */
 public class ImportToCSVButtonController {
     
-    public void importToCSV(String filePath){        
+    public void importToCSV(String filePath){   
+        if(!Utils.isSaved()){
             SaveAnswersController s = new SaveAnswersController();
             s.save();
-            ArrayList<CSVPOJO> data = dataPreProcessing();
-            writeToCSV(filePath, data);
+            Utils.setSaved(true);
+        }
+        ArrayList<CSVPOJO> data = dataPreProcessing();
+        writeToCSV(filePath, data);
                 
     }
     

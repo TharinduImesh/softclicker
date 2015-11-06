@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Hashtable;
-import view.MainWindow;
+import view.ServerWindow;
 import Codec.*;
 
 /**
@@ -21,9 +21,9 @@ public class UnicastConnectionThread extends Thread {
     private RespondMessage respondMessage;
     private Hashtable<String,RespondMessage> data;
     private final boolean isAvailable;
-    private MainWindow mainWindow;
+    private ServerWindow mainWindow;
     
-    public UnicastConnectionThread(Socket socket, int id, Hashtable<String,RespondMessage> data, MainWindow mainWindow){
+    public UnicastConnectionThread(Socket socket, int id, Hashtable<String,RespondMessage> data, ServerWindow mainWindow){
         this.client = socket;
         this.id = id;
         this.data = data;
@@ -49,7 +49,7 @@ public class UnicastConnectionThread extends Thread {
             byte []fromClient = (byte[]) oin.readObject();
             //String fromClient = oin.readObject().toString();
             byte []ack;
-            
+            System.out.println("before get answer");
             if(fromClient != null && isAvailable){   
                 // decode message from mobile app
                 respondMessage = (RespondMessage)Codec.DecodeMessage(fromClient);
@@ -68,6 +68,7 @@ public class UnicastConnectionThread extends Thread {
                 //ACKMessage = "";                                                // if server has stopped by lecturer 
                 //ACKMessage = "ACK,Server has stopped";                          // send server stopped acknoledgement
                 dout.writeObject(ack);
+                System.out.println("ack......"+ack.toString());
             }
             
             oin.close();

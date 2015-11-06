@@ -1,6 +1,6 @@
 package controller;
 
-import view.MainWindow;
+import view.StartingWindow;
 
 /**
  *
@@ -12,6 +12,6 @@ public class Initializer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MainWindow.start();
+        StartingWindow.start();
     }
 }

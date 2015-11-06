@@ -29,7 +29,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 /**
  * @ Author Chethiya
  */
-public class SoftClicker extends JFrame {
+public class GraphWindow extends JFrame {
     /**
      * Construct a new frame 
      *
@@ -40,7 +40,7 @@ public class SoftClicker extends JFrame {
     JTextField answerCount = new JTextField();
     private Hashtable<String,RespondMessage> data;
     
-    public SoftClicker( ) {
+    public GraphWindow( ) {
 //        super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
         
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));
@@ -139,7 +139,7 @@ public class SoftClicker extends JFrame {
 //                }
                 if(Utils.getQuestionCount() > 0){       
                     JFileChooser chooser = new JFileChooser();
-                    int option = chooser.showSaveDialog(SoftClicker.this);
+                    int option = chooser.showSaveDialog(GraphWindow.this);
                     if (option == JFileChooser.APPROVE_OPTION) {
                         File fileToSave = chooser.getSelectedFile();
                         ImportToCSVButtonController importTo = new ImportToCSVButtonController();

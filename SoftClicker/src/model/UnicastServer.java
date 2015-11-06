@@ -9,7 +9,7 @@ package model;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import view.MainWindow;
+import view.ServerWindow;
 
 /**
  *
@@ -18,19 +18,19 @@ import view.MainWindow;
 public class UnicastServer extends Thread{
     private ServerSocket serverSocket;
     private int count = 0;
-    private MainWindow mainWindow;
+    private ServerWindow mainWindow;
     private boolean shouldRun;
 
-    public UnicastServer(MainWindow mainWindow) {
+    public UnicastServer(ServerWindow mainWindow) {
         this.mainWindow = mainWindow;
     }
     
     public void mainServerProcess() {
         shouldRun = true;
-        int serverPort = 3000;
-        try {
+//        int serverPort = 3000;
+//        try {
             System.out.println("Starting Server");
-            serverSocket = new ServerSocket(serverPort);
+            serverSocket = Utils.getServerSocket();//new ServerSocket(serverPort);
 
             while (shouldRun) {
                 System.out.println("Waiting for request");
@@ -43,10 +43,12 @@ public class UnicastServer extends Thread{
                         /*
                         * create separate thread to deal with each mobile client
                         */
+                        System.out.println("new answer");
                         UnicastConnectionThread thread = new UnicastConnectionThread(client, count, Utils.getData(),mainWindow);
                         thread.start();
                     }
                     else{
+                        System.out.println("server down");
                         UnicastConnectionThread thread = new UnicastConnectionThread(client, count, false);
                         thread.start();
                     }
@@ -56,14 +58,14 @@ public class UnicastServer extends Thread{
                     ioe.printStackTrace();
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error starting Server on " + serverPort);
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//            System.out.println("Error starting Server on " + serverPort);
+//            e.printStackTrace();
+//        }
     }
 
     /*
-    * to stop server
+    * to stop server=
     */
     public void stopServer(){
         try {
