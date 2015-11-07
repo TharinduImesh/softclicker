@@ -42,26 +42,4 @@ public class WelcomeButtonController {
         }
         return true;
     }
-    
-    public static String hostpot(){
-        String ssid = null;
-        try {
-            ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", "netsh wlan show interfaces");
-            builder.redirectErrorStream(true);
-            Process p = builder.start();
-            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while (true) {
-                line = r.readLine();
-                if (line.contains("SSID")){
-                    return line;
-                }
-            }   } catch (Exception ex) {
-//            Logger.getLogger(StartServerButtonController.class.getName()).log(Level.SEVERE, null, ex);
-                return null;
-        }
-        
-//        return ssid;
-    }
 }

@@ -7,7 +7,8 @@
 package view;
 
 import java.awt.Toolkit;
-
+import Codec.*;
+        
 /**
  *
  * @author THARU
@@ -20,7 +21,7 @@ public class SSIDWindow extends javax.swing.JFrame {
     public SSIDWindow() {
         initComponents();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));    
-        ssid.setText("D-Link_DAP-1360");
+        ssid.setText(Extractor.getConnectedSSID());
     }
     
     /**

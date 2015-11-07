@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import Codec.*;
 
 /**
  *
@@ -103,7 +104,7 @@ public class StartingWindow extends javax.swing.JFrame {
 
             @Override
             protected String doInBackground() {
-                if(WelcomeButtonController.hostpot()!=null){
+                if(Extractor.getConnectedSSID()!=null){
 //                    if(!WelcomeButtonController.isInternetReachable()){
                         waitingDialog.dispose();
                         SSIDWindow.start();
