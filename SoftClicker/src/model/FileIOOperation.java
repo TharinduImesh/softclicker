@@ -44,7 +44,6 @@ public class FileIOOperation {
             oos.writeObject(temp);
             oos.flush();
             oos.close();
-            System.out.println("Done");
 		   
         }catch(IOException ex){
             ex.printStackTrace();

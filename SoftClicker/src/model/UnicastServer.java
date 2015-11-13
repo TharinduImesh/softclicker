@@ -17,8 +17,7 @@ import view.ServerWindow;
  */
 public class UnicastServer extends Thread{
     private ServerSocket serverSocket;
-//    private int count = 0;
-    private ServerWindow mainWindow;
+    private final ServerWindow mainWindow;
     private boolean shouldRun;
 
     public UnicastServer(ServerWindow mainWindow) {
@@ -27,11 +26,9 @@ public class UnicastServer extends Thread{
     
     public void mainServerProcess() {
         shouldRun = true;
-        System.out.println("Starting Server");
         serverSocket = Utils.getServerSocket();//new ServerSocket(serverPort);
 
         while (shouldRun) {
-            System.out.println("Waiting for request");
             try {
                 Socket client = serverSocket.accept();
 
@@ -39,7 +36,6 @@ public class UnicastServer extends Thread{
                     /*
                     * create separate thread to deal with each mobile client
                     */
-                    System.out.println("new answer");
                     UnicastConnectionThread thread = new UnicastConnectionThread(client, Utils.getData(),mainWindow);
                     thread.start();
                 }
@@ -47,13 +43,12 @@ public class UnicastServer extends Thread{
                     /*
                     * when unicastserver is down
                     */
-                    System.out.println("server down");
                     UnicastConnectionThread thread = new UnicastConnectionThread(client, false);
                     thread.start();
                 }
 
             } catch (IOException ioe) {
-//                    ioe.printStackTrace();
+                    ioe.printStackTrace();
             }
         }
     }

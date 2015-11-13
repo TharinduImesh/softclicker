@@ -15,9 +15,7 @@ import Codec.*;
 public class UnicastConnectionThread extends Thread {
 
     private final Socket client;
-//    private final int id;
     private String ACKMessage;
-    //private Answer answer;
     private RespondMessage respondMessage;
     private Hashtable<String,RespondMessage> data;
     private final boolean isAvailable;
@@ -25,16 +23,13 @@ public class UnicastConnectionThread extends Thread {
     
     public UnicastConnectionThread(Socket socket, Hashtable<String,RespondMessage> data, ServerWindow mainWindow){
         this.client = socket;
-//        this.id = id;
         this.data = data;
-        //this.answer = new Answer();
         this.isAvailable = true;
         this.mainWindow = mainWindow;
     }
 
     public UnicastConnectionThread(Socket socket, boolean isAvailable){
         this.client = socket;
-//        this.id = id;
         this.isAvailable = isAvailable;
     }
     
@@ -47,28 +42,21 @@ public class UnicastConnectionThread extends Thread {
             ObjectInputStream  oin = new ObjectInputStream(client.getInputStream());
             ObjectOutputStream  dout = new ObjectOutputStream(client.getOutputStream());
             byte []fromClient = (byte[]) oin.readObject();
-            //String fromClient = oin.readObject().toString();
             byte []ack;
-            System.out.println("before get answer");
             if(fromClient != null && isAvailable){   
                 // decode message from mobile app
                 respondMessage = (RespondMessage)Codec.DecodeMessage(fromClient);
-                //System.out.println("from Client: " + fromClient);
                 
                 ack = Codec.EncodeAcknowledgementMessage(respondMessage.getStudentID(), respondMessage.getQuestionNumber()); 
-                System.out.println("getting completed");
                 dout.writeObject(ack);                                   // send acknowledgement message
-                System.out.println("ack sent");
                 saveAnswer(respondMessage.getStudentID());                                     // sava answer
-                System.out.println("saved");
             }
             else{
                 ack = Codec.EncodeErrorMessage(Keys.ERROR_SERVICE_UNAVAILABLE);
                 
-                //ACKMessage = "";                                                // if server has stopped by lecturer 
-                //ACKMessage = "ACK,Server has stopped";                          // send server stopped acknoledgement
+                         // if server has stopped by lecturer 
+                         // send server stopped acknoledgement
                 dout.writeObject(ack);
-                System.out.println("ack......"+ack.toString());
             }
             
             oin.close();
