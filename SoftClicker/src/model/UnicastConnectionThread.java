@@ -15,7 +15,7 @@ import Codec.*;
 public class UnicastConnectionThread extends Thread {
 
     private final Socket client;
-    private final int id;
+//    private final int id;
     private String ACKMessage;
     //private Answer answer;
     private RespondMessage respondMessage;
@@ -23,18 +23,18 @@ public class UnicastConnectionThread extends Thread {
     private final boolean isAvailable;
     private ServerWindow mainWindow;
     
-    public UnicastConnectionThread(Socket socket, int id, Hashtable<String,RespondMessage> data, ServerWindow mainWindow){
+    public UnicastConnectionThread(Socket socket, Hashtable<String,RespondMessage> data, ServerWindow mainWindow){
         this.client = socket;
-        this.id = id;
+//        this.id = id;
         this.data = data;
         //this.answer = new Answer();
         this.isAvailable = true;
         this.mainWindow = mainWindow;
     }
 
-    public UnicastConnectionThread(Socket socket, int id, boolean isAvailable){
+    public UnicastConnectionThread(Socket socket, boolean isAvailable){
         this.client = socket;
-        this.id = id;
+//        this.id = id;
         this.isAvailable = isAvailable;
     }
     
@@ -77,18 +77,6 @@ public class UnicastConnectionThread extends Thread {
             e.printStackTrace();
         }
     }
-    
-    /*
-    private void decodeClientMessage(String message){
-        //Format of reply message from client:
-          //[msgLength] [MessageType] [clientMAC] [studentID] [Answer][QuestionNumber]
-                 
-        String [] temp = message.split(",");
-        answer.setId(temp[1]);
-        answer.setAnswer(Integer.parseInt(temp[3]));
-        answer.setQuestionNo(temp[2]);
-        answer.setMac(temp[0]);
-    }*/
     
     private void saveAnswer(String id){
         if(!data.containsKey(id)){

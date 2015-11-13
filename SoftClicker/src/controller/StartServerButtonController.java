@@ -13,100 +13,41 @@ import model.BroadcastServer;
  *
  * @author THARU
  */
+/*
+* handle broadcast server functions
+*/
 public class StartServerButtonController {
     BroadcastServer broadcastServer;
 
     public StartServerButtonController() {
-        broadcastServer = new BroadcastServer();
+        broadcastServer = new BroadcastServer();                                // instantiate broadcast server
     }    
     
+    // start broad cast server 
     public boolean startBroadcastSever(){
+        // if broadcast server is not instantiate, instantiate it
         if(broadcastServer == null || !broadcastServer.isAlive()){
             broadcastServer = new BroadcastServer();
         }   
-//        broadcastServer.getIPAddress();
-//        String [] temp = broadcastServer.getAddresses();
+        
+        // check, application is conncted to correct AP
         if(Extractor.isConnected()){
-            broadcastServer.start();
+            broadcastServer.start();                                            // if connect start broadcast server
             return true;
         }
         else{
-            return false;
+            return false;       
         }
     }
     
+    // stop broadcst server
     public void stopBroadcastSever(){
         broadcastServer.stopBroadcastServer();
     }
     
+    // check broadcst server is still running
     public boolean isBroadcastSeverAlive(){
         return broadcastServer.isAlive();
     }
     
-//    public static boolean isInternetReachable(){
-//        try {
-//            //make a URL to a known source
-//            URL url = new URL("http://www.google.com");
-//
-//            //open a connection to that source
-//            HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
-//
-//            //trying to retrieve data from the source. If there
-//            //is no connection, this line will fail
-//            Object objData = urlConnect.getContent();
-//
-//        } catch (UnknownHostException e) {
-//            // TODO Auto-generated catch block
-////                e.printStackTrace();
-//            return false;
-//        }
-//        catch (IOException e) {
-//            // TODO Auto-generated catch block
-////                e.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
-    
-//    public void hostpot(){
-//        try {
-//            ProcessBuilder builder = new ProcessBuilder(
-//                    "cmd.exe", "/c", "netsh wlan show interfaces");
-//            builder.redirectErrorStream(true);
-//            Process p = builder.start();
-//            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//            String line;
-//            while (true) {
-//                line = r.readLine();
-//                if (line.contains("SSID")){
-//                    System.out.println(line);
-//                    break;
-//                }
-//            }   } catch (IOException ex) {
-//            Logger.getLogger(StartServerButtonController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//    
-//    public void broadcastip(){
-//        try {
-//            ProcessBuilder builder = new ProcessBuilder(
-//                    "cmd.exe", "/c", "ipconfig");
-//            builder.redirectErrorStream(true);
-//            Process p = builder.start();
-//            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//            String line;
-//            while (true) {
-//                line = r.readLine();
-//                if (line.contains("IPv4 Address")){
-//                    System.out.println(line);
-////                    break;
-//                }
-//                else if(line.contains("Subnet Mask")){
-//                    System.out.println(line);
-//                    break;
-//                }
-//            }   } catch (IOException ex) {
-//            Logger.getLogger(StartServerButtonController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
 }

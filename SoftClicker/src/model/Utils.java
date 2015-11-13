@@ -14,6 +14,9 @@ import java.util.Hashtable;
  *
  * @author THARU
  */
+/*
+* used to store values
+*/
 public class Utils {
     private static final Hashtable<String,RespondMessage> data = new Hashtable();       // use to store answers of each question
     private static int questionCount;                                           // number question in each lecture

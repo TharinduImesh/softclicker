@@ -13,15 +13,21 @@ import view.ServerWindow;
  *
  * @author THARU
  */
+
+/*
+* handle unicast server functions
+*/
 public class ReceiveAnswerButtonController {
 
     UnicastServer unicastServer;
     public ReceiveAnswerButtonController(ServerWindow mainWindow) {
-        unicastServer = new UnicastServer(mainWindow);
+        unicastServer = new UnicastServer(mainWindow);                          // instantiate unicast server
     }       
     
+    // start unicast server 
     public void startUnicastSever(ServerWindow mainWindow){
         
+        // if unicast server is not instantiate yet, instantiate it
         if(unicastServer == null || !unicastServer.isAlive()){
             unicastServer = new UnicastServer(mainWindow);
         }
@@ -29,10 +35,12 @@ public class ReceiveAnswerButtonController {
         unicastServer.start();
     }
     
+    // stop unicast server
     public void stopUnicastSever(){
         unicastServer.stopServer();
     }
     
+    // check unicast server is running
     public boolean isUnicastSeverAlive(){
         return unicastServer.isAlive();
     }

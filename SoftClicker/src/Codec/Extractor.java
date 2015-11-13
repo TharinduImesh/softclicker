@@ -195,7 +195,7 @@ public class Extractor {
         //mask AND ip you get network address
         //Invert Mask OR Network Address you get broadcast
         
-        return broadcast;
+        return broadcast.substring(1);
     }
             
     public static void main(String Args[]){

@@ -25,53 +25,13 @@ import javax.swing.JOptionPane;
 public class BroadcastServer extends Thread{
     private ServerSocket serverSocket;
     public static DatagramSocket datagramSocket;
-    //public static byte buffer[] = new byte[1024];
     private boolean shouldRun;
-//    private String [] addresses = new String[2];
-
-    /*
-    * find IP address and broadcast address of network
-    */
-//    public void getIPAddress(){
-//        System.setProperty("java.net.preferIPv4Stack", "true");
-//        String broadcastAddress ="";
-//        String ipAddress ="";
-//        try {
-//            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-//            while (interfaces.hasMoreElements()) {
-//                NetworkInterface networkInterface = interfaces.nextElement();
-//                if (networkInterface.isLoopback())
-//                    continue;    // Don't want to broadcast to the loopback interface
-//                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
-//                    InetAddress broadcast = interfaceAddress.getBroadcast();
-//                    InetAddress ip = interfaceAddress.getAddress();
-//                    if (broadcast == null)
-//                        continue;
-//                    
-//                    broadcastAddress = broadcast.toString().substring(1);
-//                    System.out.println(broadcastAddress);
-//                    ipAddress = ip.toString();
-//                }
-//            }
-//        }
-//        catch (SocketException s){
-//            s.printStackTrace();
-//        }
-//        
-////        addresses [0] = ipAddress;
-////        addresses [1] = broadcastAddress;
-////        return new String[]{ipAddress,broadcastAddress};
-//    }
-//
-//    public String[] getAddresses() {
-//        return addresses;
-//    }
     
+    // create unicast server socket
     public void createSockets(){
         try {
             serverSocket = new ServerSocket(0);
             Utils.setServerSocket(serverSocket);
-//            System.out.println("server socket listening on port: " + serverSocket.getLocalPort());
         } catch (IOException ex) {
             ex.printStackTrace();
 //            Logger.getLogger(BroadcastServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +39,7 @@ public class BroadcastServer extends Thread{
     }
     
     /*
-    * broadcast the message which contains server IP address and port number 
+    * broadcast the message which contains unicast server IP address and port number 
     */
     public void broadcasting() {
         this.shouldRun = true;
@@ -90,11 +50,10 @@ public class BroadcastServer extends Thread{
             byte []broadcastMessage = Codec.EncodeMultiCastMessage(ipAddress, serverSocket.getLocalPort(), Utils.getQuestionCount()+1);
 
             try {
-                datagramSocket = new DatagramSocket(54000);
-//                System.out.println("datagram listening on port: " + datagramSocket.getLocalPort());
+                datagramSocket = new DatagramSocket(54000);                     // create datagram socket which is used to broadcast
                 while(this.shouldRun) {
                     try {
-                        datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName("192.168.0.255"), 54000));//datagramSocket.getLocalPort()));
+                        datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName(Extractor.getBroadcast()), 54000));
                         sleep(500);
                     }
                     catch (IOException | InterruptedException i){
