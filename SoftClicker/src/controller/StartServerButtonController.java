@@ -6,6 +6,7 @@
 
 package controller;
 
+import Codec.Extractor;
 import model.BroadcastServer;
 
 /**
@@ -23,9 +24,9 @@ public class StartServerButtonController {
         if(broadcastServer == null || !broadcastServer.isAlive()){
             broadcastServer = new BroadcastServer();
         }   
-        broadcastServer.getIPAddress();
-        String [] temp = broadcastServer.getAddresses();
-        if( temp[0]!= null && !temp[0].equals("")){
+//        broadcastServer.getIPAddress();
+//        String [] temp = broadcastServer.getAddresses();
+        if(Extractor.isConnected()){
             broadcastServer.start();
             return true;
         }

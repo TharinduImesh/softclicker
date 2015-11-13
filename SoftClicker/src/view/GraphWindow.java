@@ -1,7 +1,7 @@
 package view;
 
 import Codec.RespondMessage;
-import controller.ImportToCSVButtonController;
+import controller.ExportToCSVButtonController;
 import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
@@ -117,7 +117,7 @@ public class GraphWindow extends JFrame {
 //            }
 //        });
         
-        JButton csvButton = new JButton("Import to CSV");
+        JButton csvButton = new JButton("Export to CSV");
         southButtonPanel.add(csvButton);
         answerCount.setColumns(10);
         //answerCount.setSize(eastButtonPanel.getSize());
@@ -137,12 +137,12 @@ public class GraphWindow extends JFrame {
 //                        System.out.println(dataset.getValue(i, j));
 //                    }
 //                }
-                if(Utils.getQuestionCount() > 0){       
+                if(!Utils.getData().isEmpty()){       
                     JFileChooser chooser = new JFileChooser();
                     int option = chooser.showSaveDialog(GraphWindow.this);
                     if (option == JFileChooser.APPROVE_OPTION) {
                         File fileToSave = chooser.getSelectedFile();
-                        ImportToCSVButtonController importTo = new ImportToCSVButtonController();
+                        ExportToCSVButtonController importTo = new ExportToCSVButtonController();
                         importTo.importToCSV(fileToSave.getAbsolutePath());    
                     }
                     else {

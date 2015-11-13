@@ -6,10 +6,8 @@
 
 package view;
 
-import controller.WelcomeButtonController;
 import java.awt.Toolkit;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import Codec.*;
@@ -25,6 +23,7 @@ public class StartingWindow extends javax.swing.JFrame {
      */
     public StartingWindow() {
         initComponents();
+        // set image as the icon 
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));
     }
 
@@ -41,11 +40,10 @@ public class StartingWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        welcomeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(725, 465));
-        setPreferredSize(new java.awt.Dimension(725, 465));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(725, 465));
@@ -58,22 +56,22 @@ public class StartingWindow extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cse.jpg"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(40, 200, 120, 76);
+        jLabel2.setBounds(50, 200, 120, 76);
 
         jLabel3.setFont(new java.awt.Font("Trajan Pro", 1, 60)); // NOI18N
         jLabel3.setText("SOFT CLICKER");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(180, 210, 490, 60);
+        jLabel3.setBounds(190, 210, 490, 60);
 
-        jButton1.setFont(new java.awt.Font("Trajan Pro", 1, 18)); // NOI18N
-        jButton1.setText("WEL COME");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        welcomeButton.setFont(new java.awt.Font("Trajan Pro", 1, 18)); // NOI18N
+        welcomeButton.setText("WELCOME");
+        welcomeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                welcomeButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(260, 310, 184, 45);
+        jPanel1.add(welcomeButton);
+        welcomeButton.setBounds(260, 310, 184, 45);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,8 +87,10 @@ public class StartingWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+    private void welcomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_welcomeButtonActionPerformed
+        /*
+        * show wait dialog until connection check is done
+        */
         final JOptionPane optionPane = new JOptionPane("Please wait...................", 
                 JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
         final JDialog waitingDialog = new JDialog();
@@ -104,7 +104,10 @@ public class StartingWindow extends javax.swing.JFrame {
 
             @Override
             protected String doInBackground() {
-                if(Extractor.getConnectedSSID()!=null){
+                if(Extractor.isConnected() && Extractor.getConnectedSSID()!=null){
+                    /*
+                    * if computer is connected to correct accesspoint proceed to SSID window and close this window
+                    */
 //                    if(!WelcomeButtonController.isInternetReachable()){
                         waitingDialog.dispose();
                         SSIDWindow.start();
@@ -118,6 +121,9 @@ public class StartingWindow extends javax.swing.JFrame {
 //                    }
                 }
                 else{
+                    /*
+                    * if computer is not connected to correct AP then show connection error 
+                    */
                     waitingDialog.setVisible(false);
                     JOptionPane.showMessageDialog(null, 
                             "Please check your PC is connected to correct access point","Connection Error",
@@ -128,7 +134,7 @@ public class StartingWindow extends javax.swing.JFrame {
          };
         connectionChecker.execute();
         waitingDialog.setVisible(true);        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_welcomeButtonActionPerformed
                                  
 
     /**
@@ -169,10 +175,10 @@ public class StartingWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton welcomeButton;
     // End of variables declaration//GEN-END:variables
 }

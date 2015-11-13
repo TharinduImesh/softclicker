@@ -56,7 +56,7 @@ public class Extractor {
                 //line = r.readLine();
                 if (line.contains("Connect state")){
                     state = line.split("\\s+")[3];
-                    System.out.println(state);
+//                    System.out.println(state);
                     state = state.toLowerCase();
                     if(state.equals("connected")){
                         return true;
@@ -84,7 +84,7 @@ public class Extractor {
                 //line = r.readLine();
                 if (line.contains("SSID")){
                     ssid = line.split("\\s+")[3];
-                    System.out.println(ssid);
+//                    System.out.println(ssid);
                     return ssid;
                 }
             }
@@ -190,7 +190,7 @@ public class Extractor {
             broadcast = broadcast + "." + (networkAddress[i] | (~Integer.parseInt(arrSubnetMask[i]) & 0xff));
         }
         
-        System.out.println(broadcast.substring(1));
+//        System.out.println(broadcast.substring(1));
         
         //mask AND ip you get network address
         //Invert Mask OR Network Address you get broadcast

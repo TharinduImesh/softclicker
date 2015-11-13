@@ -5,11 +5,9 @@ import controller.SaveAnswersController;
 import controller.StartServerButtonController;
 import java.awt.Toolkit;
 import java.io.File;
-import java.util.Hashtable;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.Utils;
-import org.jfree.io.FileUtilities;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,6 +30,9 @@ public class ServerWindow extends javax.swing.JFrame {
         super("Soft Clicker - Dept. of Computer Science and Engineering, University of Moratuwa");
         initComponents();   
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("cse.jpg")));
+        /*
+        * initiate
+        */
         broadcastController = new StartServerButtonController();
         unicastController = new ReceiveAnswerButtonController(this);
         startServerButton.setEnabled(false);
@@ -55,7 +56,7 @@ public class ServerWindow extends javax.swing.JFrame {
         count = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         newQuestion = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(725, 465));
@@ -107,11 +108,11 @@ public class ServerWindow extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
-        jButton1.setText("BACK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
+        backButton.setText("BACK");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -126,7 +127,7 @@ public class ServerWindow extends javax.swing.JFrame {
                     .addComponent(receiveAnswersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(startServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sumaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -151,7 +152,7 @@ public class ServerWindow extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addComponent(sumaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(count, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -172,54 +173,81 @@ public class ServerWindow extends javax.swing.JFrame {
 
     private void startServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startServerButtonActionPerformed
     
+        /*
+        * when strat server button is clicked
+        */
         if(startServerButton.getText().equalsIgnoreCase("Start Server")){
-            newQuestion.setEnabled(false);
-            int currentCount = Utils.getQuestionCount();
-            Utils.setQuestionCount(currentCount+1);
+            newQuestion.setEnabled(false);                                      // disable new question button 
             
-            if(!Utils.isServerState()){
-                if(unicastController != null && unicastController.isUnicastSeverAlive()){
+            if(!Utils.isServerState()){                                         // if unicast server is still running 
+                if(unicastController != null &&                                 // then stop it
+                        unicastController.isUnicastSeverAlive()){
                     unicastController.stopUnicastSever();
                 }
             }
             
-            Utils.setServerState(true);
-            if(!broadcastController.isBroadcastSeverAlive()){
-                broadcastController.stopBroadcastSever();
-                if(broadcastController.startBroadcastSever()){
-                    startServerButton.setText("Stop Server");
-                    receiveAnswersButton.setEnabled(true);
+            Utils.setServerState(true);                                         // set server is running
+            if(!broadcastController.isBroadcastSeverAlive()){                   // if broadcast server is still running
+                broadcastController.stopBroadcastSever();                       // then stop it
+                if(broadcastController.startBroadcastSever()){                  // start broadcast server 
+                    startServerButton.setText("Stop Server");                   // rename this button as STOP SERVER
+                    receiveAnswersButton.setEnabled(true);                      // enable receive answer button
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Please check your PC is connected to correct access point","Connection Error",JOptionPane.ERROR_MESSAGE);
+                    /*
+                    * if broadcast server is not started, then there is a connection problem
+                    */
+                    JOptionPane.showMessageDialog(null, 
+                            "Please check your PC is connected to correct access point",
+                            "Connection Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
             
         }else{
+            /*
+            * when Stop server button is clicked
+            */
+            
+            // stop broadcast server if it is still running
             if(broadcastController.isBroadcastSeverAlive()){
                 broadcastController.stopBroadcastSever();
             }
+            
+            // enable NEW QUESTION button
             newQuestion.setEnabled(true);
+            
+            // disable START SERVER button
             startServerButton.setEnabled(false);
-            if(!receiveAnswersButton.isEnabled() && !Utils.isSaved() && !Utils.getData().isEmpty()){
-                final JOptionPane optionPane = new JOptionPane("save results?",
-                                                        JOptionPane.QUESTION_MESSAGE,
-                                                        JOptionPane.YES_NO_OPTION);
-                int response = JOptionPane.showConfirmDialog(optionPane,"save results?");
-                if (response == JOptionPane.YES_OPTION) {
+            
+            // if answers has received save them in a tempari file which is in SoftclickerUOM folder in C partition
+            if(!receiveAnswersButton.isEnabled() && 
+                    !Utils.isSaved() && !Utils.getData().isEmpty()){
+//                final JOptionPane optionPane = new JOptionPane("save results?",
+//                                                        JOptionPane.QUESTION_MESSAGE,
+//                                                        JOptionPane.YES_NO_OPTION);
+//                int response = JOptionPane.showConfirmDialog(optionPane,"save results?");
+//                if (response == JOptionPane.YES_OPTION) {
+                    int currentCount = Utils.getQuestionCount();          
+                    Utils.setQuestionCount(currentCount+1);                     // increment question count
                     SaveAnswersController s = new SaveAnswersController();
                     s.save();
-                    Utils.setSaved(true);
-                }                
+                    Utils.setSaved(true);                                       // set answer is saved
+//                }                
             }
             
+            // set server is stopped
             Utils.setServerState(false);
+            
+            // disable RECEIVE ANSWER button
             receiveAnswersButton.setEnabled(false);
+            
+            // rename this button as START SERVER
             startServerButton.setText("Start Server");
         }
     }//GEN-LAST:event_startServerButtonActionPerformed
 
     private void sumaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaryButtonActionPerformed
+        // start GraphWindow screen
         GraphWindow clicker = new GraphWindow();
         clicker.pack();
         clicker.setLocationRelativeTo(null);
@@ -227,10 +255,19 @@ public class ServerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_sumaryButtonActionPerformed
 
     private void receiveAnswersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiveAnswersButtonActionPerformed
+        // start unicast server
         unicastController.startUnicastSever(ServerWindow.this);
+        
+        // stop broadcast server
         broadcastController.stopBroadcastSever();
-        receiveAnswersButton.setEnabled(false);        
+        
+        // disable this button
+        receiveAnswersButton.setEnabled(false); 
+        
+        // set server is started
         Utils.setServerState(true);
+        
+        // set answers has not been yet
         Utils.setSaved(false);
     }//GEN-LAST:event_receiveAnswersButtonActionPerformed
 
@@ -239,16 +276,24 @@ public class ServerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_countActionPerformed
 
     private void newQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newQuestionActionPerformed
+        // go to new question
         count.setText("0");
+        
+        // enable START SERVER button 
         startServerButton.setEnabled(true);
+        
+        // disable NEW QUESTION button
         newQuestion.setEnabled(false);
+        
+        // clear previously received from the buffer
         Utils.getData().clear();
     }//GEN-LAST:event_newQuestionActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // go back to SSIDWindow
         SSIDWindow.start();
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_backButtonActionPerformed
 
     public JTextField getCountVariable(){
         return count;
@@ -283,6 +328,10 @@ public class ServerWindow extends javax.swing.JFrame {
                 mainWindow.addWindowListener(new java.awt.event.WindowAdapter(){
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                        /*
+                        * delete all the tempory files in SoftclickerUOM folder 
+                        *                 in C partition, when close this window
+                        */
                         try{
                             File file = new File("C:\\SoftclickerUOM");
                             for(File f: file.listFiles()) {
@@ -301,8 +350,8 @@ public class ServerWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JTextField count;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton newQuestion;

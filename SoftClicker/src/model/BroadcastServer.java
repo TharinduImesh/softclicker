@@ -10,14 +10,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
-import java.util.Enumeration;
 import Codec.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,51 +27,51 @@ public class BroadcastServer extends Thread{
     public static DatagramSocket datagramSocket;
     //public static byte buffer[] = new byte[1024];
     private boolean shouldRun;
-    private String [] addresses = new String[2];
+//    private String [] addresses = new String[2];
 
     /*
     * find IP address and broadcast address of network
     */
-    public void getIPAddress(){
-        System.setProperty("java.net.preferIPv4Stack", "true");
-        String broadcastAddress ="";
-        String ipAddress ="";
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = interfaces.nextElement();
-                if (networkInterface.isLoopback())
-                    continue;    // Don't want to broadcast to the loopback interface
-                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
-                    InetAddress broadcast = interfaceAddress.getBroadcast();
-                    InetAddress ip = interfaceAddress.getAddress();
-                    if (broadcast == null)
-                        continue;
-                    
-                    broadcastAddress = broadcast.toString().substring(1);
-                    System.out.println(broadcastAddress);
-                    ipAddress = ip.toString();
-                }
-            }
-        }
-        catch (SocketException s){
-            s.printStackTrace();
-        }
-        
-        addresses [0] = ipAddress;
-        addresses [1] = broadcastAddress;
-//        return new String[]{ipAddress,broadcastAddress};
-    }
-
-    public String[] getAddresses() {
-        return addresses;
-    }
+//    public void getIPAddress(){
+//        System.setProperty("java.net.preferIPv4Stack", "true");
+//        String broadcastAddress ="";
+//        String ipAddress ="";
+//        try {
+//            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+//            while (interfaces.hasMoreElements()) {
+//                NetworkInterface networkInterface = interfaces.nextElement();
+//                if (networkInterface.isLoopback())
+//                    continue;    // Don't want to broadcast to the loopback interface
+//                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+//                    InetAddress broadcast = interfaceAddress.getBroadcast();
+//                    InetAddress ip = interfaceAddress.getAddress();
+//                    if (broadcast == null)
+//                        continue;
+//                    
+//                    broadcastAddress = broadcast.toString().substring(1);
+//                    System.out.println(broadcastAddress);
+//                    ipAddress = ip.toString();
+//                }
+//            }
+//        }
+//        catch (SocketException s){
+//            s.printStackTrace();
+//        }
+//        
+////        addresses [0] = ipAddress;
+////        addresses [1] = broadcastAddress;
+////        return new String[]{ipAddress,broadcastAddress};
+//    }
+//
+//    public String[] getAddresses() {
+//        return addresses;
+//    }
     
     public void createSockets(){
         try {
             serverSocket = new ServerSocket(0);
             Utils.setServerSocket(serverSocket);
-            System.out.println("server socket listening on port: " + serverSocket.getLocalPort());
+//            System.out.println("server socket listening on port: " + serverSocket.getLocalPort());
         } catch (IOException ex) {
             ex.printStackTrace();
 //            Logger.getLogger(BroadcastServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,14 +84,14 @@ public class BroadcastServer extends Thread{
     public void broadcasting() {
         this.shouldRun = true;
         createSockets();
-//        String [] addresses = getIPAddress();
+        String ipAddress = Extractor.getIP();
         // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
-        if(addresses[0] != null && !addresses[0].equals("")){
-            byte []broadcastMessage = Codec.EncodeMultiCastMessage(addresses[0].substring(1), serverSocket.getLocalPort(), Utils.getQuestionCount());
+        if(!ipAddress.equals("NOT_SET")){
+            byte []broadcastMessage = Codec.EncodeMultiCastMessage(ipAddress, serverSocket.getLocalPort(), Utils.getQuestionCount()+1);
 
             try {
-                datagramSocket = new DatagramSocket(0);
-                System.out.println("datagram listening on port: " + datagramSocket.getLocalPort());
+                datagramSocket = new DatagramSocket(54000);
+//                System.out.println("datagram listening on port: " + datagramSocket.getLocalPort());
                 while(this.shouldRun) {
                     try {
                         datagramSocket.send(new DatagramPacket(broadcastMessage,broadcastMessage.length ,InetAddress.getByName("192.168.0.255"), 54000));//datagramSocket.getLocalPort()));
@@ -112,7 +107,8 @@ public class BroadcastServer extends Thread{
             }
         }
         else{
-            JOptionPane.showMessageDialog(null, "Connection problem. Please check your PC connects to correct access point");
+            JOptionPane.showMessageDialog(null, 
+                    "Connection problem. Please check your PC connects to correct access point");
         }
     }
 
