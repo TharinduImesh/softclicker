@@ -45,9 +45,10 @@ public class BroadcastServer extends Thread{
         this.shouldRun = true;
         createSockets();
         String ipAddress = Extractor.getIP();
+        String ssid = Extractor.getConnectedSSID();
         // broadcast message type :  [MessageType] [serverIP] [serverPort] [QuestionNumber]
-        if(!ipAddress.equals("NOT_SET")){
-            byte []broadcastMessage = Codec.EncodeMultiCastMessage(ipAddress, serverSocket.getLocalPort(), Utils.getQuestionCount()+1);
+        if(!ipAddress.equals("NOT_SET") && !ssid.equals("NOT_SET")){
+            byte []broadcastMessage = Codec.EncodeMultiCastMessage(ipAddress, serverSocket.getLocalPort(), Utils.getQuestionCount()+1, ssid);
 
             try {
                 datagramSocket = new DatagramSocket(54000);                     // create datagram socket which is used to broadcast

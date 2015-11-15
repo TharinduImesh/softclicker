@@ -8,6 +8,7 @@ public class MultiCastMessage extends Message{
     private int questionNumber;
     private String ip;
     private int serverPort;
+    private String ssid;
 
     public MultiCastMessage(String messageType) {
         super(messageType);
@@ -25,6 +26,10 @@ public class MultiCastMessage extends Message{
         this.serverPort = serverPort;
     }
 
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
+
     public int getQuestionNumber() {
         return questionNumber;
     }
@@ -35,5 +40,9 @@ public class MultiCastMessage extends Message{
 
     public int getServerPort() {
         return serverPort;
+    }
+
+    public String getSsid() {
+        return ssid;
     }
 }

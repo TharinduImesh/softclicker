@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class Codec {
 
-    public static byte[] EncodeMultiCastMessage(String serverIP, int serverPort, int questionNumber){
+    public static byte[] EncodeMultiCastMessage(String serverIP, int serverPort, int questionNumber, String ssid){
         try {
             byte[] packet;
             
@@ -24,6 +24,7 @@ public class Codec {
             question number: 5 bits
             server ip: 4 bytes
             server port: 4 bytes
+            ssid: variable length (length of string)
             */
             
             InetAddress ip = InetAddress.getByName(serverIP);  //throws unknown host exception
@@ -31,12 +32,15 @@ public class Codec {
             byte messageType_questionNumber_byte = mType_qNumberIntoByte(Keys.MultiCast, questionNumber);
             byte[] serverIP_byteArray = ip.getAddress();
             byte[] serverPort_byteArray = portIntoByteArray(serverPort);
+            byte[] ssid_byteArray = ssid.getBytes();
             
-            packet = new byte[Keys.MTYPE_QNUM_LENGTH + Keys.IP_LENGTH + Keys.PORT_LENGTH];
+            packet = new byte[Keys.MTYPE_QNUM_LENGTH + Keys.IP_LENGTH + Keys.PORT_LENGTH + ssid_byteArray.length];
             
             packet[0] = messageType_questionNumber_byte;
             System.arraycopy(serverIP_byteArray, 0, packet, Keys.MTYPE_QNUM_LENGTH, Keys.IP_LENGTH);
             System.arraycopy(serverPort_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH, Keys.PORT_LENGTH);
+            System.arraycopy(ssid_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH + Keys.PORT_LENGTH
+                    , ssid_byteArray.length);
             return packet;
         } catch (UnknownHostException ex) {
             Logger.getLogger(Codec.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,6 +116,7 @@ public class Codec {
                 multicastMessage.setQuestionNumber(mType_qNumberByteIntoQuestionNumber(b[0]));
                 multicastMessage.setIp(byteArrayIntoIPAddress(b, Keys.MTYPE_QNUM_LENGTH));
                 multicastMessage.setServerPort(byteArrayIntoPort(b,Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH));
+                multicastMessage.setSsid(byteArrayIntoSSID(b, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH + Keys.PORT_LENGTH));
                 return multicastMessage;
                 
             case Keys.Respond:
@@ -136,6 +141,13 @@ public class Codec {
             default:
                 return null;
         }
+    }
+    
+    private static String byteArrayIntoSSID(byte []b, int start){
+        int length = b.length - start;
+        byte [] arr = new byte[length];
+        System.arraycopy(b, start, arr, 0, length);
+        return new String(arr, Charset.forName("UTF-8"));
     }
     
     private static String byteArrayIntoStudentID(byte []b, int start){
@@ -291,6 +303,7 @@ public class Codec {
                 System.out.println(m1.getIp());
                 System.out.println(m1.getServerPort());
                 System.out.println(m1.getQuestionNumber());
+                System.out.println(m1.getSsid());
                 System.out.println("");
                 break;
             
@@ -325,7 +338,7 @@ public class Codec {
     }
     
     private static void testMessages(){
-        byte [] array = EncodeMultiCastMessage("192.168.2.101", 3000, 20);
+        byte [] array = EncodeMultiCastMessage("192.168.2.8", 3000, 20, "Whatever_SSID_name_given_here_1");
         Message m = DecodeMessage(array);
         testPrint(m);
         
@@ -417,5 +430,15 @@ public class Codec {
         */  
         
         //testMessages();
+        
+        /*
+        String ssid = "D_Tap_Hello_1";
+        byte[] ssid_byteArray = ssid.getBytes();
+        System.out.println(ssid_byteArray.length);
+        */
+        
+        byte [] array = EncodeMultiCastMessage("192.168.2.8", 3000, 20, "Whatever_SSID_name_@gi111");
+        Message m = DecodeMessage(array);
+        testPrint(m);
     }
 }
