@@ -138,7 +138,7 @@ public class StartingWindow extends javax.swing.JFrame {
                                  
 
     /**
-     * @param args the command line arguments
+     * run this form
      */
     public static void start() {
         /* Set the Nimbus look and feel */
@@ -166,10 +166,12 @@ public class StartingWindow extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 StartingWindow startingWindow = new StartingWindow();
                 startingWindow.setVisible(true);
                 startingWindow.setLocationRelativeTo(null);
+                startingWindow.setResizable(false);
             }
         });
     }

@@ -5,6 +5,7 @@ import controller.ExportToCSVButtonController;
 import controller.ReceiveAnswerButtonController;
 import controller.StartServerButtonController;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,76 +68,19 @@ public class GraphWindow extends JFrame {
         JPanel southButtonPanel = new JPanel();
         final JLabel statusbar = 
                  new JLabel("Output of your selection will go here");
-//        final JButton remButton = new JButton("Receive Answers");
-//        remButton.setEnabled(false);
-//        final JButton runServerButton = new JButton("Start Server");
-//        southButtonPanel.add(runServerButton);
-//        runServerButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(runServerButton.getText().equals("Start Server")){
-//                    broadcastController.startBroadcastSever();
-//                    runServerButton.setText("Stop Server");
-//                    remButton.setEnabled(true);
-//                }else{
-//                    
-//                    if(broadcastController.isBroadcastSeverAlive()){
-//                        broadcastController.stopBroadcastSever();
-//                    }
-//                    
-//                    if(unicastController != null && unicastController.isUnicastSeverAlive()){
-//                        unicastController.stopUnicastSever();
-//                    }
-//                    remButton.setEnabled(false);
-//                    runServerButton.setText("Start Server");
-//                }
-//            }
-//        });
-        
-//        southButtonPanel.add(remButton);        
-//        remButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) { 
-////                unicastController.startUnicastSever();
-////                broadcastController.stopBroadcastSever();
-////                remButton.setEnabled(false);
-//            }
-//        });
         this.add(southButtonPanel, BorderLayout.SOUTH);
         
         
         // East Button Panel
         
         JPanel eastButtonPanel = new JPanel();
-//        JButton refreshButton = new JButton("Refresh");
-//        southButtonPanel.add(refreshButton);
-//        refreshButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                updateDataset(dataset);
-//            }
-//        });
-        
-        JButton csvButton = new JButton("Export to CSV");
+        JButton csvButton = new JButton("Export to csv");
+        csvButton.setFont(new Font("Trajan Pro", Font.BOLD, 14));
         southButtonPanel.add(csvButton);
         answerCount.setColumns(10);
-        //answerCount.setSize(eastButtonPanel.getSize());
-        //answerCount.setEditable(false);
-//        JLabel answerCountLabel = new JLabel("Answer Count");
-//        eastButtonPanel.add(answerCountLabel);
-//        eastButtonPanel.add(answerCount);
         csvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                System.out.println("Button 2 Clicked!");
-//                int row = dataset.getRowCount();
-//                int col = dataset.getColumnCount();
-//                
-//                for(int i = 0; i < row; i++){
-//                    for(int j = 0; j < col; j++){
-//                        System.out.println(dataset.getValue(i, j));
-//                    }
-//                }
                 if(!Utils.getData().isEmpty()){       
                     JFileChooser chooser = new JFileChooser();
                     int option = chooser.showSaveDialog(GraphWindow.this);
@@ -206,14 +150,7 @@ public class GraphWindow extends JFrame {
         dataset.addValue( summary[1] , q2 , ans2 );        
         dataset.addValue( summary[2] , q3 , ans3 ); 
         dataset.addValue( summary[3] , q4 , ans4 );   
-        dataset.addValue( summary[4] , q5 , ans5 );
-        
-//        dataset.addValue( 10 , q1 , ans1 );        
-//        dataset.addValue( 5, q2 , ans2 );        
-//        dataset.addValue( 16 , q3 , ans3 ); 
-//        dataset.addValue( 12 , q4 , ans4 );   
-//        dataset.addValue( 8 , q5 , ans5 );
-        
+        dataset.addValue( summary[4] , q5 , ans5 );    
     }
     
     public int [] getSummary(){
@@ -246,24 +183,6 @@ public class GraphWindow extends JFrame {
         return summary;
     }
     
-    
-//    private int[] getAnswers(){
-//        return mockServer.getAnswers();
-//    }
-
-    /** Main method
-     * @param args */
-//    public static void main(String[] args) {
-//        EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                SoftClicker clicker = new SoftClicker();
-//                clicker.pack();
-//                clicker.setLocationRelativeTo(null);
-//                clicker.setVisible(true);
-//            }
-//         });
-//    }
 }
 
 class MockServer{

@@ -109,7 +109,7 @@ public class ServerWindow extends javax.swing.JFrame {
         });
 
         backButton.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
-        backButton.setText("BACK");
+        backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -252,6 +252,7 @@ public class ServerWindow extends javax.swing.JFrame {
         clicker.pack();
         clicker.setLocationRelativeTo(null);
         clicker.setVisible(true);
+        clicker.setResizable(false);
     }//GEN-LAST:event_sumaryButtonActionPerformed
 
     private void receiveAnswersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiveAnswersButtonActionPerformed
@@ -325,6 +326,7 @@ public class ServerWindow extends javax.swing.JFrame {
                 ServerWindow mainWindow = new ServerWindow();
                 mainWindow.setLocationRelativeTo(null);
                 mainWindow.setVisible(true);
+                mainWindow.setResizable(false);
                 mainWindow.addWindowListener(new java.awt.event.WindowAdapter(){
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent windowEvent) {

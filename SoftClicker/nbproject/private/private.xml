@@ -3,10 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Wireless%20Project/softclicker/SoftClicker/src/model/UnicastServer.java</file>
-            <file>file:/D:/Wireless%20Project/softclicker/SoftClicker/src/view/ServerWindow.java</file>
-            <file>file:/D:/Wireless%20Project/softclicker/SoftClicker/src/view/GraphWindow.java</file>
-            <file>file:/D:/Wireless%20Project/softclicker/SoftClicker/src/model/BroadcastServer.java</file>
+            <file>file:/D:/Wireless%20Project/softclicker/SoftClicker/src/model/UnicastConnectionThread.java</file>
         </group>
     </open-files>
 </project-private>

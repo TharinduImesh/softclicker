@@ -70,7 +70,7 @@ public class SSIDWindow extends javax.swing.JFrame {
         });
 
         backButton.setFont(new java.awt.Font("Trajan Pro", 1, 14)); // NOI18N
-        backButton.setText("BACK");
+        backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -181,7 +181,8 @@ public class SSIDWindow extends javax.swing.JFrame {
             public void run() {
                 SSIDWindow ssidWindow = new SSIDWindow();
                 ssidWindow.setVisible(true);
-                ssidWindow.setLocationRelativeTo(null);                
+                ssidWindow.setLocationRelativeTo(null);  
+                ssidWindow.setResizable(false);
             }
         });
     }
