@@ -7,6 +7,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -24,6 +26,7 @@ public class Codec {
             question number: 5 bits
             server ip: 4 bytes
             server port: 4 bytes
+            ssid size: 4 bytes
             ssid: variable length (length of string)
             */
             
@@ -32,14 +35,16 @@ public class Codec {
             byte messageType_questionNumber_byte = mType_qNumberIntoByte(Keys.MultiCast, questionNumber);
             byte[] serverIP_byteArray = ip.getAddress();
             byte[] serverPort_byteArray = portIntoByteArray(serverPort);
+            byte[] ssidSize_byteArray = ssidSizeIntoByteArray(ssid.length());
             byte[] ssid_byteArray = ssid.getBytes();
             
-            packet = new byte[Keys.MTYPE_QNUM_LENGTH + Keys.IP_LENGTH + Keys.PORT_LENGTH + ssid_byteArray.length];
+            packet = new byte[Keys.MTYPE_QNUM_LENGTH + Keys.IP_LENGTH + Keys.PORT_LENGTH + Keys.SSID_SIZE_LENGTH+ ssid_byteArray.length];
             
             packet[0] = messageType_questionNumber_byte;
             System.arraycopy(serverIP_byteArray, 0, packet, Keys.MTYPE_QNUM_LENGTH, Keys.IP_LENGTH);
             System.arraycopy(serverPort_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH, Keys.PORT_LENGTH);
-            System.arraycopy(ssid_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH + Keys.PORT_LENGTH
+            System.arraycopy(ssidSize_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH + Keys.PORT_LENGTH, Keys.SSID_SIZE_LENGTH);
+            System.arraycopy(ssid_byteArray, 0, packet, Keys.IP_LENGTH + Keys.MTYPE_QNUM_LENGTH + Keys.PORT_LENGTH + Keys.SSID_SIZE_LENGTH
                     , ssid_byteArray.length);
             return packet;
         } catch (UnknownHostException ex) {
@@ -144,9 +149,13 @@ public class Codec {
     }
     
     private static String byteArrayIntoSSID(byte []b, int start){
-        int length = b.length - start;
-        byte [] arr = new byte[length];
-        System.arraycopy(b, start, arr, 0, length);
+        byte []arr1 = new byte[Keys.SSID_SIZE_LENGTH];
+        System.arraycopy(b, start, arr1, 0, Keys.SSID_SIZE_LENGTH);
+        ByteBuffer bb = ByteBuffer.wrap(arr1); // big-endian by default
+        int ssid_size = bb.getInt();
+        
+        byte [] arr = new byte[ssid_size];
+        System.arraycopy(b, start + Keys.SSID_SIZE_LENGTH, arr, 0, ssid_size);
         return new String(arr, Charset.forName("UTF-8"));
     }
     
@@ -281,8 +290,14 @@ public class Codec {
         return bin;
     }
 
+    private static byte[] ssidSizeIntoByteArray(int value) {
+        ByteBuffer bb = ByteBuffer.allocate(Keys.SSID_SIZE_LENGTH);
+        bb.putInt(value);
+        return bb.array(); 
+    }
+    
     private static byte[] portIntoByteArray(int value) {
-        ByteBuffer bb = ByteBuffer.allocate(4);
+        ByteBuffer bb = ByteBuffer.allocate(Keys.PORT_LENGTH);
         bb.putInt(value);
         return bb.array(); 
     }
@@ -292,6 +307,19 @@ public class Codec {
         System.arraycopy(b, start, arr, 0, Keys.PORT_LENGTH);
         ByteBuffer bb = ByteBuffer.wrap(arr); // big-endian by default
         return bb.getInt();
+    }
+    
+     public static boolean validateStudentID(String id){
+        String pattern = "\\d{6}[a-zA-Z]{1}";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(id);
+        if(m.find()){
+            System.out.println("valid");
+            return true;
+        }else{
+            System.out.println("invalid");
+            return false;
+        }
     }
     
     private static void testPrint(Message m){
@@ -437,8 +465,9 @@ public class Codec {
         System.out.println(ssid_byteArray.length);
         */
         
-        byte [] array = EncodeMultiCastMessage("192.168.2.8", 3000, 20, "Whatever_SSID_name_@gi111");
+        /*byte [] array = EncodeMultiCastMessage("192.168.2.8", 3000, 20, Extractor.getConnectedSSID());
         Message m = DecodeMessage(array);
         testPrint(m);
+        */
     }
 }

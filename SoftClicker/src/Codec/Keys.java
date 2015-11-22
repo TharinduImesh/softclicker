@@ -33,6 +33,7 @@ public class Keys {
     public static final int STUDENTID_LENGTH    = 7;
     public static final int ANSWER_LENGTH       = 1;
     public static final int MTYPE_QNUM_LENGTH   = 1;
+    public static final int SSID_SIZE_LENGTH    = 4;
     
     //Message Lengths (Length of byte arrays)
     public static final int LENGTH_MULTICAST = 9;

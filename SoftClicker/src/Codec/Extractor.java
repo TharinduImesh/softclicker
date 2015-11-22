@@ -219,5 +219,9 @@ public class Extractor {
         ip "150.10.10.10"
         broadcast "150.10.11.255"
         */
+        
+        /*
+        System.out.println(getConnectedSSID());
+        */
     }
 }
